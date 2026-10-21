@@ -1,0 +1,12 @@
+# 사이트 배포에 필요한 파일만 올림 (index.html, img/, media/, fonts/)
+*.py
+*.json
+app_template.html
+old_main_v4.html
+src_4k/
+upscale_*.jpg
+fonts/_unused/
+.claude/
+detail.css
+detail.js
+range_server.py
