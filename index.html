@@ -441,6 +441,8 @@ button{font:inherit}
 .vp .nv{transition:opacity .3s,transform .3s,background 1.2s ease,box-shadow 1.2s ease,backdrop-filter 1.2s ease,-webkit-backdrop-filter 1.2s ease}
 .vp .nv::after{transition:opacity 1.2s ease}
 .vp .nv svg{transition:filter 1.2s ease}
+/* 바깥 그림자는 모든 상태(어두움/밝음, 숨김/표시 이동 중)에서 제거 */
+.nav,.nav[data-tone=dark],.nav[data-tone=light],.nav.away{--shadow:0 0 0 transparent}
 </style>
 </head>
 <body>
