@@ -435,6 +435,14 @@ button{font:inherit}
 .nav[data-tone=light],.nav[data-tone=light].lens{--shadow:0 0 0 transparent;--tint:rgba(190,194,200,.55);--fg:rgba(24,27,32,.88);--fg-on:#0d0f12;--on-bg:rgba(255,255,255,.92);--ts:none;
   -webkit-backdrop-filter:blur(14px) saturate(1.15);backdrop-filter:blur(14px) saturate(1.15);box-shadow:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -1px 0 rgba(0,0,0,.06)}
 .nav[data-tone=light]::after{opacity:.5}
+/* 숨김/표시 모션을 상단 메뉴와 동일하게: 투명도 1.2초, 이동 1.8초, 같은 곡선 */
+.vp .sq{transition:opacity 1.2s ease,transform 1.8s cubic-bezier(.4,0,.2,1)}
+.modal .x{transition:padding 1.8s cubic-bezier(.4,0,.2,1),background .25s,gap 1.8s,transform 1.8s cubic-bezier(.4,0,.2,1)}
+.modal .x .lbl{transition:max-width 1.8s cubic-bezier(.4,0,.2,1),opacity 1.2s ease,margin 1.8s cubic-bezier(.4,0,.2,1)}
+.modal .x .xx{transition:font-size 1.8s cubic-bezier(.4,0,.2,1)}
+.vp .nv{transition:opacity .3s,transform .3s,background 1.2s ease,box-shadow 1.2s ease,backdrop-filter 1.2s ease,-webkit-backdrop-filter 1.2s ease}
+.vp .nv::after{transition:opacity 1.2s ease}
+.vp .nv svg{transition:filter 1.2s ease}
 </style>
 </head>
 <body>
