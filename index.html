@@ -421,6 +421,16 @@ button{font:inherit}
 .vp:hover .cur{opacity:0}
 .modal.mm .cur{opacity:1}
 @media (hover:hover) and (pointer:fine){.modal{cursor:none}.modal .x,.modal .sq,.modal .sq i{cursor:pointer}}
+/* 상단 메뉴: 더 느리고 부드럽게 (가속·감속이 모두 완만한 곡선) */
+.nav{transition:background .35s,box-shadow .35s,transform 1.8s cubic-bezier(.4,0,.2,1),opacity 1.2s ease}
+@media (prefers-reduced-motion:reduce){.nav{transition:background .35s,box-shadow .35s,opacity .3s}}
+/* 터치 화살표: 0.8초 뒤 버튼 배경은 사라지고 화살표만 남김 */
+.vp .nv{transition:opacity .3s,transform .3s,background 1s ease,box-shadow 1s ease,backdrop-filter 1s ease,-webkit-backdrop-filter 1s ease}
+.vp .nv svg{transition:filter 1s ease}
+.vp.idle .nv,.vp.idle .nv.lens{background:transparent;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+.vp.idle .nv::after{opacity:0}
+.vp .nv::after{transition:opacity 1s ease}
+.vp.idle .nv svg{filter:drop-shadow(0 0 4px rgba(0,0,0,.55))}
 </style>
 </head>
 <body>
@@ -604,7 +614,7 @@ function bindLightbox(){
   LB.items.forEach((f,k)=>{f.dataset.g=f.closest(".grp")?[...document.querySelectorAll("#vDetail .grp")].indexOf(f.closest(".grp")):"all";f.tabIndex=0;f.setAttribute("role","button");f.setAttribute("aria-label",(f.querySelector("img")?.alt||"Image")+" — enlarge");f.addEventListener("click",()=>openLB(k,0));f.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openLB(k,0)}})});
 }
 let lbT=null;
-function lbWake(){const x=$("close"),q=$("sq");x.classList.remove("min");q.classList.remove("away");clearTimeout(lbT);lbT=setTimeout(()=>{if($("modal").classList.contains("on")&&!x.matches(":hover")){x.classList.add("min");q.classList.add("away")}},800)}
+function lbWake(){const x=$("close"),q=$("sq"),v=$("vp");x.classList.remove("min");q.classList.remove("away");v.classList.remove("idle");clearTimeout(lbT);lbT=setTimeout(()=>{if($("modal").classList.contains("on")&&!x.matches(":hover")){x.classList.add("min");q.classList.add("away");v.classList.add("idle")}},800)}
 function lbLayout(){const vp=$("vp"),w=vp.getBoundingClientRect().width;vp.classList.toggle("side",w>0&&(innerWidth-w)/2>=60)}
 ["mousemove","touchstart","touchmove","click","keydown"].forEach(ev=>$("modal").addEventListener(ev,lbWake,{passive:true}));
 addEventListener("keydown",()=>{if($("modal").classList.contains("on"))lbWake()});
