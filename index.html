@@ -381,6 +381,26 @@ button{font:inherit}
 .mcard .code .t{font-family:var(--mono);font-weight:700;font-size:clamp(22px,2.4vw,40px);line-height:1;letter-spacing:-.01em;color:#fff}
 @media(max-width:760px){.mcard .code .t{font-size:clamp(24px,6.4vw,34px)}}
 @media(max-width:760px){.mcard .info{left:14px;top:12px;gap:8px}.mcard .code{left:14px;bottom:12px}.mcard .info .mono{font-size:10px}}
+/* 상단 메뉴: 더 천천히 부드럽게 */
+.nav{transition:background .35s,box-shadow .35s,transform .95s cubic-bezier(.22,1,.36,1),opacity .8s ease}
+.nav.away{transform:translate(-50%,-190%)}
+@media (prefers-reduced-motion:reduce){.nav{transition:background .35s,box-shadow .35s,opacity .3s}}
+/* 이미지 확대 화면: 모바일 주소창 변화(dvh) / 노치 안전영역 */
+@supports (height:100dvh){.vp{width:min(calc(100vw - 32px),calc((100dvh - 32px)*var(--ar,1.7778)))}}
+.modal .x{top:max(14px,env(safe-area-inset-top));right:max(18px,env(safe-area-inset-right));display:inline-flex;align-items:center;transition:padding .7s cubic-bezier(.22,1,.36,1),background .25s,gap .7s}
+.modal .x .lbl{display:block;max-width:90px;overflow:hidden;white-space:nowrap;margin-right:8px;transition:max-width .7s cubic-bezier(.22,1,.36,1),opacity .5s ease,margin .7s cubic-bezier(.22,1,.36,1)}
+.modal .x .xx{display:block;line-height:1;transition:font-size .7s cubic-bezier(.22,1,.36,1)}
+.modal .x.min{padding:9px 12px}
+.modal .x.min .lbl{max-width:0;opacity:0;margin-right:0}
+.modal .x.min .xx{font-size:13px}
+/* 좌우 화살표: 창 폭에 여유가 있으면 이미지 밖(화면 양옆)으로 */
+.vp.side .nv{position:fixed}
+.vp.side .lbprev{left:max(18px,env(safe-area-inset-left))}
+.vp.side .lbnext{right:max(18px,env(safe-area-inset-right))}
+/* 하단 개수 표시: 움직임이 없으면 사라짐 */
+.vp .sq{transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);left:max(16px,env(safe-area-inset-left));bottom:max(16px,env(safe-area-inset-bottom))}
+.vp .sq:not(.away){opacity:1;transform:none}
+.vp .sq.away{opacity:0;transform:translateY(12px);pointer-events:none}
 </style>
 </head>
 <body>
@@ -390,7 +410,7 @@ button{font:inherit}
 <div class="view" id="vMain"></div>
 <div class="view" id="vDetail"></div>
 <div class="zc" id="zc" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M7.25 2h1.5v5.25H14v1.5H8.75V14h-1.5V8.75H2v-1.5h5.25z"/></svg></div>
-<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Image viewer"><button class="x" id="close">CLOSE ✕</button><div class="lbwrap">
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Image viewer"><button class="x" id="close" aria-label="Close"><span class="lbl">CLOSE</span><span class="xx" aria-hidden="true">✕</span></button><div class="lbwrap">
   <div class="vp" id="vp">
     <img id="mImg" alt=""><img id="mImg2" alt="">
     <div class="cur" id="cur"><svg viewBox="0 0 16 16"><path d="m5.675 2-1.050 1.050L9.575 8l-4.950 4.950L5.675 14l6-6-6-6Z"/></svg></div>
@@ -550,7 +570,7 @@ function moveInd(anim){
 addEventListener("resize",()=>moveInd(false));
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>moveInd(false));
 let navT=null,navAutoOn=false;
-function navShow(){nav.classList.remove("away");clearTimeout(navT);if(navAutoOn)navT=setTimeout(()=>{if(!nav.matches(":hover")&&!$("modal").classList.contains("on"))nav.classList.add("away")},1500)}
+function navShow(){nav.classList.remove("away");clearTimeout(navT);if(navAutoOn)navT=setTimeout(()=>{if(!nav.matches(":hover")&&!$("modal").classList.contains("on"))nav.classList.add("away")},800)}
 function navAuto(on){navAutoOn=on;navShow()}
 ["wheel","touchmove","scroll","keydown"].forEach(ev=>addEventListener(ev,navShow,{passive:true}));
 nav.addEventListener("mouseenter",()=>{nav.classList.remove("away");clearTimeout(navT)});
@@ -563,7 +583,15 @@ function bindLightbox(){
   LB.items=[...document.querySelectorAll("#vDetail .gallery figure,#vDetail .grp figure")];
   LB.items.forEach((f,k)=>{f.dataset.g=f.closest(".grp")?[...document.querySelectorAll("#vDetail .grp")].indexOf(f.closest(".grp")):"all";f.tabIndex=0;f.setAttribute("role","button");f.setAttribute("aria-label",(f.querySelector("img")?.alt||"Image")+" — enlarge");f.addEventListener("click",()=>openLB(k,0));f.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openLB(k,0)}})});
 }
-function lbUI(){
+let lbT=null;
+function lbWake(){const x=$("close"),q=$("sq");x.classList.remove("min");q.classList.remove("away");clearTimeout(lbT);lbT=setTimeout(()=>{if($("modal").classList.contains("on")&&!x.matches(":hover")){x.classList.add("min");q.classList.add("away")}},800)}
+function lbLayout(){const vp=$("vp"),w=vp.getBoundingClientRect().width;vp.classList.toggle("side",w>0&&(innerWidth-w)/2>=76)}
+["mousemove","touchstart","touchmove","click","keydown"].forEach(ev=>$("modal").addEventListener(ev,lbWake,{passive:true}));
+addEventListener("keydown",()=>{if($("modal").classList.contains("on"))lbWake()});
+addEventListener("resize",()=>{if($("modal").classList.contains("on")){lbLayout();lbWake()}});
+$("close").addEventListener("mouseenter",()=>{$("close").classList.remove("min");clearTimeout(lbT)});
+$("close").addEventListener("mouseleave",lbWake);
+function lbUI(){lbLayout();lbWake();
   const n=LB.items.length,f=LB.items[LB.i];
   const grp=LB.items.map((x,k)=>[x,k]).filter(([x])=>x.dataset.g===f.dataset.g);
   $("sq").innerHTML=grp.map(([x,k])=>`<i class="${k===LB.i?"on":""}" data-k="${k}"></i>`).join("")+`<em>${String(LB.i+1).padStart(2,"0")} / ${String(n).padStart(2,"0")}</em>`;
