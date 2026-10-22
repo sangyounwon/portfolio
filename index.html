@@ -375,6 +375,12 @@ button{font:inherit}
 .gallery figure img{will-change:transform;transition:transform .6s;transform-origin:50% 0}
 .gallery figure:hover img{transform:scale(1.065)}
 @media (hover:none){.gallery figure:hover img{transform:none}}
+.mcard .im::before{background:linear-gradient(180deg,rgba(0,0,0,.5),rgba(0,0,0,0) 50%),linear-gradient(0deg,rgba(0,0,0,.55),rgba(0,0,0,0) 45%)}
+.mcard .code{position:absolute;z-index:2;left:20px;bottom:18px;display:flex;flex-direction:column;align-items:flex-start;gap:4px;color:#fff;pointer-events:none}
+.mcard .code .n{font-family:var(--mono);color:var(--a);font-size:14px;letter-spacing:.04em}
+.mcard .code .t{font-family:var(--mono);font-weight:700;font-size:clamp(22px,2.4vw,40px);line-height:1;letter-spacing:-.01em;color:#fff}
+@media(max-width:760px){.mcard .code .t{font-size:clamp(24px,6.4vw,34px)}}
+@media(max-width:760px){.mcard .info{left:14px;top:12px;gap:8px}.mcard .code{left:14px;bottom:12px}.mcard .info .mono{font-size:10px}}
 </style>
 </head>
 <body>
@@ -469,7 +475,7 @@ function mainHTML(){
   ${BIG.map(p=>`<button class="big" data-go="${p.n}" style="--c:${p.bg};--a:${p.c}">${IMGT(p.card,p.cardHi,"100vw",false,p.t)}
     <div class="info"><div><span class="mono">Year</span><span>${esc(p.year)}</span></div><div><span class="mono">Studio</span><span>${esc(p.studio)}</span></div></div>
     <div class="code"><span class="n">/ ${p.n}</span><span class="t">${esc(p.t)}</span></div></button>`).join("")}
-  <div class="small" style="--n:${SMALL.length}">${SMALL.map(p=>`<button class="mcard" data-go="${p.n}" style="--c:${p.bg};--a:${p.c}"><div class="im">${IMGT(p.card,p.cardHi,"(max-width:760px) 100vw, 25vw",false,p.t)}<div class="info"><div><span class="mono">Year</span><span>${esc(p.year)}</span></div><div><span class="mono">Studio</span><span>${esc(p.studio)}</span></div></div></div><div class="cap"><span class="n">/ ${p.n}</span><span class="t">${esc(p.t)}</span></div></button>`).join("")}</div>
+  <div class="small" style="--n:${SMALL.length}">${SMALL.map(p=>`<button class="mcard" data-go="${p.n}" style="--c:${p.bg};--a:${p.c}"><div class="im">${IMGT(p.card,p.cardHi,"(max-width:760px) 100vw, 25vw",false,p.t)}<div class="info"><div><span class="mono">Year</span><span>${esc(p.year)}</span></div><div><span class="mono">Studio</span><span>${esc(p.studio)}</span></div></div><div class="code"><span class="n">/ ${p.n}</span><span class="t">${esc(p.t)}</span></div></div></button>`).join("")}</div>
 </main>
 <footer class="mfoot" id="contact" data-tone="dark">
   <div><div class="mono ctag">Contact</div><div class="row"><span class="mono">Mail</span><a href="mailto:sangyoun.won@nexon.co.kr" style="color:#e8e8eb">sangyoun.won@nexon.co.kr</a></div><div class="row"><span class="mono">Role</span><span>Environment Art</span></div></div>
@@ -544,7 +550,7 @@ function moveInd(anim){
 addEventListener("resize",()=>moveInd(false));
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>moveInd(false));
 let navT=null,navAutoOn=false;
-function navShow(){nav.classList.remove("away");clearTimeout(navT);if(navAutoOn)navT=setTimeout(()=>{if(!nav.matches(":hover")&&!$("modal").classList.contains("on"))nav.classList.add("away")},3000)}
+function navShow(){nav.classList.remove("away");clearTimeout(navT);if(navAutoOn)navT=setTimeout(()=>{if(!nav.matches(":hover")&&!$("modal").classList.contains("on"))nav.classList.add("away")},1500)}
 function navAuto(on){navAutoOn=on;navShow()}
 ["wheel","touchmove","scroll","keydown"].forEach(ev=>addEventListener(ev,navShow,{passive:true}));
 nav.addEventListener("mouseenter",()=>{nav.classList.remove("away");clearTimeout(navT)});
