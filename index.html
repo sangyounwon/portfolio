@@ -431,6 +431,10 @@ button{font:inherit}
 .vp.idle .nv::after{opacity:0}
 .vp .nv::after{transition:opacity 1s ease}
 .vp.idle .nv svg{filter:drop-shadow(0 0 4px rgba(0,0,0,.55))}
+/* 밝은 배경 위 상단 메뉴: 그림자 없이, 흰색보다 약간 진한 회색 글래스 + 더 진한 글자 */
+.nav[data-tone=light],.nav[data-tone=light].lens{--shadow:0 0 0 transparent;--tint:rgba(190,194,200,.55);--fg:rgba(24,27,32,.88);--fg-on:#0d0f12;--on-bg:rgba(255,255,255,.92);--ts:none;
+  -webkit-backdrop-filter:blur(14px) saturate(1.15);backdrop-filter:blur(14px) saturate(1.15);box-shadow:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -1px 0 rgba(0,0,0,.06)}
+.nav[data-tone=light]::after{opacity:.5}
 </style>
 </head>
 <body>
