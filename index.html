@@ -416,6 +416,11 @@ button{font:inherit}
 /* 터치 기기 가로 모드: 화살표가 놓일 양옆 여백(약 62px)을 확보 */
 @media (hover:none) and (orientation:landscape){.vp{width:min(calc(100vw - 124px),calc((100vh - 32px)*var(--ar,1.7778)))}}
 @supports (height:100dvh){@media (hover:none) and (orientation:landscape){.vp{width:min(calc(100vw - 124px),calc((100dvh - 32px)*var(--ar,1.7778)))}}}
+/* 커서 화살표: 이미지 틀 밖(검정 여백)까지 표시되도록 화면 기준 고정 위치 */
+.vp .cur{position:fixed;left:0;top:0}
+.vp:hover .cur{opacity:0}
+.modal.mm .cur{opacity:1}
+@media (hover:hover) and (pointer:fine){.modal{cursor:none}.modal .x,.modal .sq,.modal .sq i{cursor:pointer}}
 </style>
 </head>
 <body>
@@ -632,10 +637,13 @@ $("next2").onclick=e=>{e.stopPropagation();openLB(LB.i+1,1)};
 $("sq").addEventListener("click",e=>{const i=e.target.closest("i");if(!i)return;e.stopPropagation();const k=+i.dataset.k;openLB(k,k>LB.i?1:-1)});
 
 (function(){
-  const vp=$("vp"),cur=$("cur");
-  vp.addEventListener("mousemove",e=>{const r=vp.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;cur.style.transform=`translate(${x}px,${y}px)`;cur.classList.toggle("l",x<r.width/2)});
-  vp.addEventListener("click",e=>{if(e.target.closest(".nv"))return;e.stopPropagation();const r=vp.getBoundingClientRect(),left=(e.clientX-r.left)<r.width/2;
-    if(window.matchMedia("(hover:hover) and (pointer:fine)").matches)openLB(LB.i+(left?-1:1),left?-1:1)});
+  /* 데스크톱: 커서를 따라다니는 화살표가 창 전체(검정 여백 포함)에서 나타나고, 좌/우 절반 클릭으로 이동 */
+  const m=$("modal"),cur=$("cur"),fine=matchMedia("(hover:hover) and (pointer:fine)");
+  m.addEventListener("mousemove",e=>{cur.style.transform=`translate(${e.clientX}px,${e.clientY}px)`;cur.classList.toggle("l",e.clientX<innerWidth/2);m.classList.toggle("mm",!e.target.closest(".x,.sq"))});
+  m.addEventListener("mouseleave",()=>m.classList.remove("mm"));
+  m.addEventListener("click",e=>{if(e.target.closest(".x,.sq,.nv"))return;
+    if(fine.matches){const left=e.clientX<innerWidth/2;openLB(LB.i+(left?-1:1),left?-1:1)}
+    else if(e.target.id==="modal")m.classList.remove("on")});
 })();
 (function(){
   const zc=$("zc");if(!zc||!matchMedia("(hover:hover) and (pointer:fine)").matches)return;
@@ -741,7 +749,6 @@ function spy(){
 addEventListener("scroll",spy,{passive:true});
 addEventListener("hashchange",route);
 $("close").onclick=()=>$("modal").classList.remove("on");
-$("modal").onclick=e=>{if(e.target.id==="modal")$("modal").classList.remove("on")};
 addEventListener("keydown",e=>{if(!$("modal").classList.contains("on"))return;if(e.key==="Escape")$("modal").classList.remove("on");else if(e.key==="ArrowRight")openLB(LB.i+1,1);else if(e.key==="ArrowLeft")openLB(LB.i-1,-1)});
 route();
 </script>
