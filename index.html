@@ -443,6 +443,9 @@ button{font:inherit}
 .vp .nv svg{transition:filter 1s ease}
 /* 바깥 그림자는 모든 상태(어두움/밝음, 숨김/표시 이동 중)에서 제거 */
 .nav,.nav[data-tone=dark],.nav[data-tone=light],.nav.away{--shadow:0 0 0 transparent}
+/* 하단 개수 표시: 이미지 틀 가장자리(잘림 영역) 안에서만 움직이도록 이동 거리를 줄이고, 완만한 곡선으로 투명도 변화가 주가 되게 */
+.vp .sq{transition:opacity 1s ease,transform 1.1s cubic-bezier(.4,0,.2,1)}
+.vp .sq.away{transform:translateY(14px)}
 </style>
 </head>
 <body>
