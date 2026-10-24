@@ -446,18 +446,45 @@ button{font:inherit}
 /* 하단 개수 표시: 이미지 틀 가장자리(잘림 영역) 안에서만 움직이도록 이동 거리를 줄이고, 완만한 곡선으로 투명도 변화가 주가 되게 */
 .vp .sq{transition:opacity 1s ease,transform 1.1s cubic-bezier(.4,0,.2,1)}
 .vp .sq.away{transform:translateY(14px)}
-/* 메뉴가 숨겨진 동안 남는 가로 바 */
-.navbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:220px;height:34px;z-index:19;display:flex;justify-content:center;align-items:flex-start;padding-top:9px;box-sizing:border-box;opacity:0;pointer-events:none;transition:opacity .6s ease}
-.navbar.on{opacity:1;pointer-events:auto;transition:opacity 1s ease .5s}
-.navbar i{display:block;width:132px;height:5px;border-radius:3px;background:rgba(255,255,255,.9);box-shadow:0 0 0 .5px rgba(0,0,0,.28);transition:transform .3s ease,width .3s ease}
-.navbar:hover i{transform:scaleY(1.3);width:146px}
-@media (prefers-reduced-motion:reduce){.navbar,.navbar.on{transition:opacity .2s}}
+@media (prefers-reduced-motion:reduce){}
+/* 숨김 = 위로 사라지는 대신, 메뉴가 얇은 바로 축소되며 바와 교차(크로스페이드) */
+.nav{transform-origin:50% 0;transition:background .35s,box-shadow .35s,transform 1s cubic-bezier(.4,0,.2,1),opacity .9s ease}
+.nav.away{transform:translate(-50%,-7px) scaleY(.108);opacity:0}
+.nav a{transition:color .35s,opacity .5s ease}
+.nav.away a{opacity:0}
+.nav .ind{transition:transform .25s ease,opacity .5s}
+@media (prefers-reduced-motion:reduce){.nav{transition:background .35s,box-shadow .35s,opacity .3s}.nav.away{transform:translate(-50%,0)}}
+
+/* 메뉴 접힘 = 같은 요소가 얇은 글래스 바로 변형(모핑): 높이가 줄고, 선택 항목의 흰 알약이 바 안의 흰 구간이 된다 */
+.nav{height:var(--nh,46px);box-sizing:border-box;transform-origin:50% 0;transition:background .8s ease,box-shadow .8s ease,height .9s cubic-bezier(.4,0,.2,1),top .9s cubic-bezier(.4,0,.2,1),padding .9s cubic-bezier(.4,0,.2,1)}
+.nav a{transition:color .35s,opacity .45s ease}
+.nav .ind{top:6px;bottom:6px}
+.nav.away{height:5px;top:7px;padding-top:0;padding-bottom:0;opacity:1;pointer-events:auto;transform:translateX(-50%);background:rgba(255,255,255,.18)}
+.nav[data-tone=light].away{background:rgba(120,126,134,.3)}
+.nav.away a{opacity:0;pointer-events:none}
+.nav.away .ind{top:0;bottom:0;background:rgba(255,255,255,.94);box-shadow:none}
+.nav.away::before{content:"";position:absolute;left:-30px;right:-30px;top:-14px;bottom:-22px}
+@media (prefers-reduced-motion:reduce){.nav{transition:background .3s,height .01s,top .01s,padding .01s}}
+/* 참고 샘플(21st.dev glass-nav)의 접힘 타이밍: 글자 투명도·폭/높이 변화가 같은 곡선(.2,.8,.2,1)으로 동시에 진행, 펼칠 때는 글자가 조금 늦게 나타남 */
+.nav{transition:background .6s cubic-bezier(.2,.8,.2,1),box-shadow .6s cubic-bezier(.2,.8,.2,1),height .8s cubic-bezier(.2,.8,.2,1),top .8s cubic-bezier(.2,.8,.2,1),padding .8s cubic-bezier(.2,.8,.2,1)}
+.nav a{transition:color .35s,opacity .5s cubic-bezier(.2,.8,.2,1) .22s}
+.nav.away a{transition:color .35s,opacity .32s cubic-bezier(.2,.8,.2,1) 0s}
+/* 선택 상태 표시: 모든 배경/접힘 상태에서 같은 반투명 글래스 알약으로 통일 */
+.nav,.nav[data-tone=light],.nav[data-tone=dark]{--on-bg:rgba(255,255,255,.34)}
+.nav .ind{box-shadow:inset 0 1px 0 rgba(255,255,255,.6),inset 0 -1px 0 rgba(255,255,255,.15),inset 0 0 0 1px rgba(255,255,255,.18)}
+.nav.away .ind{background:rgba(255,255,255,.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.55)}
+
+/* 홈 세로줄: 위에서 아래로 그려지고, 이후 약한 빛줄기가 천천히 흐름 */
+.home .hl i{position:absolute;top:50%;left:0;width:var(--d,900px);height:var(--d,900px);margin-top:calc(var(--d,900px)/-2);flex:none;box-sizing:border-box;border:1px solid rgba(255,255,255,var(--a,.08));border-radius:50%;clip-path:inset(0 0 0 50%);will-change:transform}
+.home .hl i::before{bottom:0;background:rgba(255,255,255,var(--a,.08));}
+
+.home .hl i:nth-child(1){--k:0}.home .hl i:nth-child(2){--k:1}.home .hl i:nth-child(3){--k:2}.home .hl i:nth-child(4){--k:3}.home .hl i:nth-child(5){--k:4}.home .hl i:nth-child(6){--k:5}.home .hl i:nth-child(7){--k:6}.home .hl i:nth-child(8){--k:7}
+
 </style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="lg" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="1" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="14" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
 <nav class="nav" id="nav" data-tone="light"></nav>
-<div class="navbar" id="navbar" aria-hidden="true"><i></i></div>
 <div class="bblur" aria-hidden="true"><i></i><i></i><i></i></div>
 <div class="view" id="vMain"></div>
 <div class="view" id="vDetail"></div>
@@ -606,6 +633,7 @@ ${p.sections?`<section class="works" id="images" data-tone="dark">${p.sections.m
 function setNav(items){
   nav.innerHTML='<span class="ind"></span>'+items.map(([l,a])=>`<a data-act="${a}">${l}</a>`).join("");
   sections=items.filter(x=>x[1].startsWith("sec:")).map(x=>x[1].slice(4));
+  measureNav();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(measureNav);
 }
 let indT=null;
 function moveInd(anim){
@@ -614,23 +642,30 @@ function moveInd(anim){
   const L=act.offsetLeft,R=nav.clientWidth-(act.offsetLeft+act.offsetWidth);
   if(anim&&ind._L!=null&&(ind._L!==L||ind._R!==R)){
     const right=L>ind._L,fast=".3s cubic-bezier(.3,1.45,.5,1)",slow=".6s cubic-bezier(.3,1.3,.5,1)";
-    ind.style.transition=(right?`left ${slow},right ${fast}`:`left ${fast},right ${slow}`)+",transform .25s ease,opacity .3s";
+    ind.style.transition=(right?`left ${slow},right ${fast}`:`left ${fast},right ${slow}`)+",top .9s cubic-bezier(.4,0,.2,1),bottom .9s cubic-bezier(.4,0,.2,1),transform .25s ease,opacity .3s";
     ind.classList.add("mv");clearTimeout(indT);indT=setTimeout(()=>ind.classList.remove("mv"),260);
-  }else ind.style.transition="none";
+  }else ind.style.transition="left 0s,right 0s,top .9s cubic-bezier(.4,0,.2,1),bottom .9s cubic-bezier(.4,0,.2,1),opacity .3s";
   ind.style.opacity="1";ind.style.left=L+"px";ind.style.right=R+"px";ind._L=L;ind._R=R;
+
 }
 addEventListener("resize",()=>moveInd(false));
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>moveInd(false));
 let navT=null,navAutoOn=false;
-const navbar=$("navbar");
-function setAway(b){nav.classList.toggle("away",b);navbar.classList.toggle("on",b&&navAutoOn)}
-function navShow(){setAway(false);clearTimeout(navT);if(navAutoOn)navT=setTimeout(()=>{if(!nav.matches(":hover")&&!$("modal").classList.contains("on"))setAway(true)},800)}
+function measureNav(){if(!nav.classList.contains("away"))nav.style.setProperty("--nh",nav.offsetHeight+"px")}
+addEventListener("resize",measureNav);
+function setAway(b){nav.classList.toggle("away",b&&navAutoOn)}
+let mx=-1,my=-1;
+addEventListener("mousemove",e=>{mx=e.clientX;my=e.clientY},{passive:true});
+/* 메뉴 위 또는 메뉴가 나타나는 위쪽 영역에 마우스가 있으면 숨기지 않는다 (바에 올려 메뉴가 내려오는 중에 다시 사라지는 문제 방지) */
+function nearNav(){return nav.matches(":hover")||(my>=0&&my<90&&Math.abs(mx-innerWidth/2)<nav.offsetWidth/2+40)}
+function armHide(){clearTimeout(navT);if(navAutoOn)navT=setTimeout(()=>{if($("modal").classList.contains("on"))return;if(nearNav())armHide();else setAway(true)},800)}
+function navShow(){setAway(false);armHide()}
 function navAuto(on){navAutoOn=on;navShow()}
 ["wheel","touchmove","scroll","keydown"].forEach(ev=>addEventListener(ev,navShow,{passive:true}));
 nav.addEventListener("mouseenter",()=>{setAway(false);clearTimeout(navT)});
 nav.addEventListener("mouseleave",navShow);
-/* 숨겨진 동안 화면 위쪽에 남는 가로 바(아이폰 홈 인디케이터처럼): 마우스를 올리거나 탭하면 메뉴가 내려옴 */
-["mouseenter","touchstart","click"].forEach(ev=>navbar.addEventListener(ev,navShow,{passive:true}));
+/* 접힌(미니 바) 상태에서 터치하면 메뉴가 펼쳐짐 */
+nav.addEventListener("touchstart",navShow,{passive:true});
 function show(v){view=v;$("vMain").classList.toggle("on",v==="main");$("vDetail").classList.toggle("on",v==="detail")}
 
 
@@ -725,8 +760,33 @@ function homeShow(i,off=0){
 function homeTimer(ms){clearTimeout(HOME.t);if(HOME.paused||matchMedia("(prefers-reduced-motion:reduce)").matches)return;HOME.t=setTimeout(()=>homeShow(HOME.i+1),ms)}
 function homePlay(){HOME.paused=false;const r=$("vMain").querySelector(".home");if(r){r.classList.remove("paused");r.style.setProperty("--dur",HOME.dur+"ms");const n=Math.min(4,P.length),el=Date.now()-HOME.start;homeShow(HOME.i+Math.floor(el/HOME.dur),el%HOME.dur)}}
 function homeStop(){clearTimeout(HOME.t);HOME.paused=true}
+function hlFlow(r){
+  const els=[...r.querySelectorAll(".hl i")],n=els.length;if(!n||r._hl)return;r._hl=true;
+  const still=matchMedia("(prefers-reduced-motion:reduce)").matches,t0=performance.now();
+  let mx=0,my=0,ms=0,hv=0,tg=0;                                   /* 마우스 위치, 부드럽게 따라가는 값, 호버 세기 */
+  r.addEventListener("mousemove",e=>{const b=r.getBoundingClientRect();mx=e.clientX-b.left;my=e.clientY-b.top;tg=1});
+  r.addEventListener("mouseleave",()=>{tg=0});
+  function tick(now){
+    if(!r.isConnected)return;
+    const t=still?0:(now-t0)/1000,W=r.clientWidth,Hh=r.clientHeight;
+    const ox=-W*.1,oy=Hh*1.65,r0=Hh*.7,r1=Math.hypot(W-ox,oy),sg=Math.max(120,W*.12);   /* 모든 원이 같은 중심(왼쪽 아래) */
+    const rm=Math.hypot(mx-ox,my-oy);ms+=(rm-ms)*.14;hv+=(tg-hv)*.08;
+    els.forEach((el,i)=>{
+      const u=(((i+.5)/n-t*.016)%1+1)%1,ph=t*.32;                       /* 반지름이 줄며 왼쪽 아래로 천천히 흐름 */
+      let rd=r0+(u+.7/(2*Math.PI)*(Math.sin(2*Math.PI*u+ph)-Math.sin(ph)))*(r1-r0);   /* 간격이 물결처럼 늘고 줄어듦 */
+      const g=Math.exp(-(((rd-ms)/sg)**2));
+      rd+=hv*.35*(rd-ms)*g;                                             /* 커서 주변 원은 부드럽게 밀려남 */
+      el.style.setProperty("--d",(rd*2).toFixed(0)+"px");
+      el.style.transform="translate("+(ox-rd).toFixed(1)+"px,"+(oy-Hh/2).toFixed(1)+"px)";
+      el.style.opacity=Math.min(1,u*10,(1-u)*10).toFixed(2);
+      el.style.setProperty("--a",(.08+hv*g*.45).toFixed(3));            /* 가까울수록 밝아짐 */
+    });
+    if(!still)requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
 function initHome(){
-  const r=$("vMain").querySelector(".home");if(!r||HOME.ready)return;HOME.ready=true;
+  const r=$("vMain").querySelector(".home");if(r)hlFlow(r);if(!r||HOME.ready)return;HOME.ready=true;
   $("hprev").onclick=()=>homeShow(HOME.i-1);$("hnext").onclick=()=>homeShow(HOME.i+1);
   r.querySelectorAll(".bars i").forEach(el=>el.onclick=()=>homeShow(+el.dataset.i));
   r.addEventListener("mouseenter",()=>{HOME.off=Date.now()-HOME.start;HOME.paused=true;clearTimeout(HOME.t);r.classList.add("paused")});
@@ -779,6 +839,8 @@ function spy(){
   if(view==="main")cur="top";
   sections.map(id=>[id,$(id)]).filter(x=>x[1]).sort((a,b)=>a[1].offsetTop-b[1].offsetTop).forEach(([id,el])=>{if(el.offsetTop<=y)cur="sec:"+id});
   if(view==="main"&&innerHeight+scrollY>=document.documentElement.scrollHeight-4)cur="sec:contact";
+  if(view==="detail"){if(!cur)cur="main";                     /* 맨 위(Info 앞)에서는 Work를 선택 상태로 */
+    if(innerHeight+scrollY>=document.documentElement.scrollHeight-4&&document.getElementById("next"))cur="sec:next"}   /* 맨 아래에서는 Next */
   if(navLock)cur=navLock;
   setActive(cur);
 }
