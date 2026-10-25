@@ -41,6 +41,7 @@ button{font:inherit}
 .home .slide{position:absolute;inset:0;opacity:0;transition:opacity 2.2s ease;pointer-events:none}
 .home .slide.on{opacity:1}
 .home .slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.8) saturate(.9);transform:scale(1.035) translateX(-1.5%);opacity:0;transition:transform 0s linear 2.4s,opacity 1.8s ease}
+.home .hl i.hl-off::after{display:none}
 .home .hl i::after{content:"";position:absolute;inset:-1px;border-radius:50%;border:1px solid rgba(255,255,255,var(--gb,.2));box-sizing:border-box;box-shadow:inset 0 0 12px 0 rgba(255,255,255,var(--gi,.05));-webkit-mask-image:conic-gradient(from var(--g,0deg),transparent 0deg,#000 15deg,transparent 30deg,transparent 360deg);mask-image:conic-gradient(from var(--g,0deg),transparent 0deg,#000 15deg,transparent 30deg,transparent 360deg)}   /* 원 일부 구간이 밝게 아래로 회전(앞뒤 대칭 그라데이션) */
 .home .slide img.cur{opacity:1;transform:scale(1.05) translateX(1.5%);transition:transform 8s linear,opacity 1.8s ease}   /* 약간 확대 + 오른쪽으로 천천히 이동 */ 
 .home::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
@@ -568,7 +569,7 @@ function homeImgs(p){return [p.card,...(HOME_PICK[p.n]||[]).map(f=>`img/${p.n}/$
 function mainHTML(){
   return `
 <section class="home" id="top" data-tone="dark">
-  <div class="slides">${P.slice(0,4).map((p,i)=>`<div class="slide${i===0?" on":""}" data-i="${i}">${homeImgs(p).map((u,k)=>`<img src="${u}" alt="${esc(p.t)}" decoding="async">`).join("")}</div>`).join("")}</div>
+  <div class="slides">${P.slice(0,4).map((p,i)=>`<div class="slide${i===0?" on":""}" data-i="${i}">${homeImgs(p).map((u,k)=>`<img src="${u}" alt="${esc(p.t)}" decoding="async"${i||k?' fetchpriority="low"':""}>`).join("")}</div>`).join("")}</div>
   <div class="hl"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
   <div class="hin">
     <div class="tag mono">Portfolio 2026 · Environment Art</div>
@@ -807,8 +808,10 @@ function hlFlow(r){
   const LEV=[.036,.02,.012];let li=1,mul=1,segEnd=3,PP=0,vel=.02;                      /* 속도 단계: 강 > 중 > 약 순환, 구간 길이·세기는 조금씩 랜덤 */                                         /* 마우스 x, 부드럽게 따라가는 x, 호버 세기 */
   r.addEventListener("mousemove",e=>{const b=r.getBoundingClientRect();mx=e.clientX-b.left;my=e.clientY-b.top;tg=1});
   r.addEventListener("mouseleave",()=>{tg=0});
+  let onScreen=true;if("IntersectionObserver" in window)new IntersectionObserver(es=>{onScreen=es[0].isIntersecting}).observe(r);
   function tick(now){
     if(!r.isConnected)return;
+    if(document.hidden||!onScreen||!r.offsetParent){last=performance.now();setTimeout(()=>requestAnimationFrame(tick),250);return}   /* 안 보일 때는 계산·페인트를 멈춤 */
     const dt=Math.min(.1,(now-last)/1000);last=now;ms+=(mx-ms)*.14;hv+=(tg-hv)*.12;T+=dt;
     if(!still){if(T>=segEnd){li=(li+1)%3;mul=.88+Math.random()*.24;segEnd=T+4+Math.random()*4}vel+=(LEV[li]*mul-vel)*(1-Math.exp(-dt/1.6));PP+=vel*dt}   /* 목표 속도로 미끄러지듯 전환 */
     const t=still?0:T,W=r.clientWidth,Hh=r.clientHeight,sg=Math.max(120,W*.12);
@@ -824,13 +827,13 @@ function hlFlow(r){
       x-=hv*.35*(x-ms)*Math.exp(-(((x-ms)/sg)**2));                      /* 커서 주변 원은 부드럽게 몰려듦 */
       const k1=Math.sin(i*12.9898)*43758.5453,k2=Math.sin(i*78.233)*12543.1234,a1=k1-Math.floor(k1),a2=k2-Math.floor(k2);
       const R=Hh*(1.4+.4*a1),oy=Hh*(.7+.4*a2)+Math.sin(t*.12+i*1.7)*Hh*.03;   /* 원마다 중심·크기가 달라 일부는 살짝 교차 */
-      el.style.setProperty("--d",(R*2).toFixed(0)+"px");
+      const dS=(R*2).toFixed(0)+"px";if(el._d!==dS){el.style.setProperty("--d",dS);el._d=dS}
       el.style.transform="translate("+(x-2*R).toFixed(1)+"px,"+(oy-Hh/2).toFixed(1)+"px)";   /* x = 원의 오른쪽 끝 */
       el.style.opacity=Math.min(1,u*10,(1-u)*10).toFixed(2);
-      el.style.setProperty("--a",".08");
+
       /* 밝은 구간: 화면에 보이는 호 안에서만 위에서 아래로 내려오고, 아래로 빠지면 위에서 다시 시작 */
       const ctr=oy,cxx=x-R;let v0=null,v1=null;
-      for(let t=0;t<=180;t+=2){const rad=t*Math.PI/180,px=cxx+R*Math.sin(rad),py=ctr-R*Math.cos(rad);if(px>=0&&px<=W&&py>=0&&py<=Hh){if(v0===null)v0=t;v1=t}}   /* 호 중 hero 안에 있는 각도 범위 */
+      for(let t=0;t<=180;t+=3){const rad=t*Math.PI/180,px=cxx+R*Math.sin(rad),py=ctr-R*Math.cos(rad);if(px>=0&&px<=W&&py>=0&&py<=Hh){if(v0===null)v0=t;v1=t}}   /* 호 중 hero 안에 있는 각도 범위 */
       const sp=300*(.85+.3*(.5+.5*Math.sin(T*.3)))/R*57.2958;      /* 원 크기와 관계없이 화면에서 같은 속도(px/초)로 이동 → 각속도로 환산 */
       const cx=cxx,mAng=Math.atan2(mx-cx,-(my-oy))*180/Math.PI,dm=Math.abs(Math.hypot(mx-cx,my-oy)-R),w=hv*Math.exp(-((dm/(W*.22))**2));
       const hasArc=v0!==null;el._vis=hasArc;el._len=hasArc?v1-v0:0;
@@ -842,9 +845,9 @@ function hlFlow(r){
         el._near=near;
       }
       const near=el._near||0;
-      el.style.setProperty("--g",(angs[i]||0).toFixed(1)+"deg");
-      env[i]=(env[i]||0)+((lit.has(i)?1:0)-(env[i]||0))*(1-Math.exp(-dt/1.1));const e=Math.max(env[i],w*near);                 /* 선택된 선만 부드럽게 밝아지고, 호버 근처 선도 밝아짐 */
-      el.style.setProperty("--gb",(.26*e+.14*w*near).toFixed(3));el.style.setProperty("--gi",(.06*e+.08*w*near).toFixed(3));   /* 모이면 선과 안쪽 빛이 조금 더 밝아짐(안쪽 빛만) */                                 /* 호버해도 선 색은 동일 */
+      env[i]=(env[i]||0)+((lit.has(i)?1:0)-(env[i]||0))*(1-Math.exp(-dt/1.1));const e=Math.max(env[i],w*near);
+      const on=e>.01;if(on!==el._on){el._on=on;el.classList.toggle("hl-off",!on)}                      /* 꺼진 원은 마스크 렌더링 자체를 생략 */
+      if(on){el.style.setProperty("--g",(angs[i]||0).toFixed(1)+"deg");el.style.setProperty("--gb",(.26*e+.14*w*near).toFixed(3));el.style.setProperty("--gi",(.06*e+.08*w*near).toFixed(3))}
     });
     if(!still)requestAnimationFrame(tick);
   }
