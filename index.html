@@ -38,12 +38,13 @@ button{font:inherit}
 
 .home{--peek:120px;position:relative;height:calc(100vh - var(--peek));height:calc(100svh - var(--peek));min-height:560px;overflow:hidden;background:#0c0d0f;color:#e6e6e8}
 .home .slides{position:absolute;inset:0}
-.home .slide{position:absolute;inset:0;opacity:0;transition:opacity 1.5s ease;pointer-events:none}
+.home .slide{position:absolute;inset:0;opacity:0;transition:opacity 2.2s ease;pointer-events:none}
 .home .slide.on{opacity:1}
-.home .slide img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.6) saturate(.8);transform:scale(1);transition:transform 10s linear}
-.home .slide.on img{transform:scale(1.035)}
+.home .slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.8) saturate(.9);transform:scale(1.035) translateX(-1.5%);opacity:0;transition:transform 0s linear 2.4s,opacity 1.8s ease}
+.home .hl i::after{content:"";position:absolute;inset:-1px;border-radius:50%;border:1px solid rgba(255,255,255,var(--gb,.2));box-sizing:border-box;box-shadow:inset 0 0 12px 0 rgba(255,255,255,var(--gi,.05));-webkit-mask-image:conic-gradient(from var(--g,0deg),transparent 0deg,#000 15deg,transparent 30deg,transparent 360deg);mask-image:conic-gradient(from var(--g,0deg),transparent 0deg,#000 15deg,transparent 30deg,transparent 360deg)}   /* 원 일부 구간이 밝게 아래로 회전(앞뒤 대칭 그라데이션) */
+.home .slide img.cur{opacity:1;transform:scale(1.05) translateX(1.5%);transition:transform 8s linear,opacity 1.8s ease}   /* 약간 확대 + 오른쪽으로 천천히 이동 */ 
 .home::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:linear-gradient(90deg,rgba(8,9,11,.86) 0%,rgba(8,9,11,.55) 42%,rgba(8,9,11,.18) 100%),linear-gradient(0deg,rgba(8,9,11,.7) 0%,rgba(8,9,11,0) 38%)}
+  background:linear-gradient(90deg,rgba(8,9,11,.84) 0%,rgba(8,9,11,.6) 24%,rgba(8,9,11,.22) 48%,rgba(8,9,11,0) 66%),linear-gradient(0deg,rgba(8,9,11,.5) 0%,rgba(8,9,11,0) 30%)}
 .home .hl{position:absolute;inset:0;z-index:1;display:flex;pointer-events:none}
 .home .hl i{flex:1;border-left:1px solid rgba(255,255,255,.09)}
 .home .hl i:nth-child(5){border-left-color:rgba(255,255,255,.2)}
@@ -62,7 +63,7 @@ button{font:inherit}
 .home .prog .bars i{width:34px;height:2px;background:rgba(255,255,255,.22);position:relative;overflow:hidden;cursor:pointer;display:block}
 .home .prog .bars i::after{content:"";position:absolute;inset:0;background:#e6e6e8;transform:scaleX(0);transform-origin:left}
 .home .prog .bars i.done::after{transform:scaleX(1)}
-.home .prog .bars i.on::after{animation:hprog var(--dur,6.5s) linear forwards}
+.home .prog .bars i.on::after{animation:hprog var(--dur,8s) linear forwards}
 .home.paused .prog .bars i.on::after{animation-play-state:paused}
 @keyframes hprog{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 .home .cap2{display:flex;align-items:flex-end;gap:18px;text-align:right}
@@ -79,7 +80,7 @@ button{font:inherit}
 .home .arr .l svg{transform:scaleX(-1)}
 @media(max-width:760px){.home .hin{padding:84px 16px 28px}.home .foot2{flex-direction:column;align-items:flex-start}.home .cap2{text-align:left}.home .stats{gap:22px}.home .sum{font-size:14px}}
 @media(max-height:780px){.home .sum{display:none}.home .kr{margin:10px 0 6px}}
-@media (prefers-reduced-motion:reduce){.home .slide img,.home .slide.on img{transition:none;transform:none}}
+@media (prefers-reduced-motion:reduce){.home .slide img,.home .slide img.cur{transition:none;transform:none}.home .hl i::after{display:none}}
 
 .bblur{position:fixed;left:0;right:0;bottom:0;height:clamp(128px,22vh,220px);z-index:12;pointer-events:none}
 .bblur i{position:absolute;inset:0;display:block}
@@ -467,7 +468,7 @@ button{font:inherit}
 @media (prefers-reduced-motion:reduce){.nav{transition:background .3s,height .01s,top .01s,padding .01s}}
 /* 참고 샘플(21st.dev glass-nav)의 접힘 타이밍: 글자 투명도·폭/높이 변화가 같은 곡선(.2,.8,.2,1)으로 동시에 진행, 펼칠 때는 글자가 조금 늦게 나타남 */
 .nav{transition:background .6s cubic-bezier(.2,.8,.2,1),box-shadow .6s cubic-bezier(.2,.8,.2,1),height .8s cubic-bezier(.2,.8,.2,1),top .8s cubic-bezier(.2,.8,.2,1),padding .8s cubic-bezier(.2,.8,.2,1)}
-.nav a{transition:color .35s,opacity .5s cubic-bezier(.2,.8,.2,1) .22s}
+.nav a{transition:color .35s,opacity .35s cubic-bezier(.2,.8,.2,1) .26s}
 .nav.away a{transition:color .35s,opacity .32s cubic-bezier(.2,.8,.2,1) 0s}
 /* 선택 상태 표시: 모든 배경/접힘 상태에서 같은 반투명 글래스 알약으로 통일 */
 .nav,.nav[data-tone=light],.nav[data-tone=dark]{--on-bg:rgba(255,255,255,.34)}
@@ -480,6 +481,29 @@ button{font:inherit}
 
 .home .hl i:nth-child(1){--k:0}.home .hl i:nth-child(2){--k:1}.home .hl i:nth-child(3){--k:2}.home .hl i:nth-child(4){--k:3}.home .hl i:nth-child(5){--k:4}.home .hl i:nth-child(6){--k:5}.home .hl i:nth-child(7){--k:6}.home .hl i:nth-child(8){--k:7}
 
+
+/* ---------- 텍스트 등장 모션 (aerleum.com 방식: 줄 단위 마스크 + 아래에서 올라옴, 줄마다 0.133s 간격) ---------- */
+html.rvpre .home .tag,html.rvpre .home .nm,html.rvpre .home .sum,html.rvpre .home .stats,html.rvpre .home .foot2{visibility:hidden}
+/* 분할용 span이 .tags span 같은 기존 span 스타일(테두리·여백)을 물려받지 않도록 초기화 */
+html body .rv-ln.rv-ln,html body .rv-li.rv-li,html body .rv-w.rv-w{border:0;border-radius:0;background:none;box-shadow:none;text-transform:inherit;letter-spacing:inherit}
+html body .rv-ln.rv-ln{padding:0;margin:0}
+html body .rv-li.rv-li,html body .rv-w.rv-w{padding:0;margin:0}
+html body .rv-w.rv-w{display:inline}
+.rv-ln{display:block;clip-path:inset(-.12em -.06em -.12em -.06em)}   /* 레이아웃을 바꾸지 않는 마스크(원래 높이·여백과 동일) */
+.rv-li{display:block;white-space:nowrap;transform:translateY(125%);transition:transform 1s cubic-bezier(.77,0,.175,1);transition-delay:var(--d,0s)}
+.rv-on .rv-li{transform:none}
+.rv-fade{opacity:0;transform:translateY(24px);transition:opacity .9s ease var(--d,0s),transform 1s cubic-bezier(.2,.8,.2,1) var(--d,0s)}
+.rv-fade.rv-on{opacity:1;transform:none}
+.rv-fade-o{opacity:0;transition:opacity .9s ease var(--d,0s)}
+.rv-fade-o.rv-on{opacity:1}
+.rv-nt,.rv-nt::before{transition:none!important}
+.home .tag.rv-dot::before{opacity:0;transform:scale(0);transition:transform 1s cubic-bezier(.77,0,.175,1) var(--dd,0s),opacity .6s ease var(--dd,0s),background .8s}   /* 라벨 앞 빨간 점도 글씨와 함께 나타남 */
+.home .tag.rv-dot.rv-on::before{opacity:1;transform:none}
+.about .ab-row.rv-row{position:relative;border-top-color:transparent}                      /* 경력 가로선: 왼쪽에서 오른쪽으로 그려진 뒤 글씨가 올라옴 */
+.about .ab-row.rv-row::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:#b9b9b9;transform:scaleX(0);transform-origin:0 50%;transition:transform 1.1s cubic-bezier(.77,0,.175,1) var(--d,0s)}
+.about .ab-row.rv-row.rv-on::before{transform:none}
+.about .ab-acc .ab-row:first-child.rv-row::before{display:none}
+@media (prefers-reduced-motion:reduce){.about .ab-row.rv-row{border-top-color:#b9b9b9}.about .ab-row.rv-row::before{display:none}.rv-li{transform:none;transition:none}.rv-fade,.rv-fade-o{opacity:1;transform:none;transition:none}}
 </style>
 </head>
 <body>
@@ -510,9 +534,9 @@ const acc=(title,body,open=false,link="")=>`<div class="ab-acc${open?" open":""}
 document.addEventListener("click",e=>{const h=e.target.closest(".ab-h");if(!h)return;const o=h.getAttribute("aria-expanded")!=="true";const a=h.parentElement;const group=a.dataset.link?[...document.querySelectorAll(`.ab-acc[data-link="${a.dataset.link}"]`)]:[a];group.forEach(x=>{x.classList.toggle("open",o);x.querySelector(".ab-h").setAttribute("aria-expanded",o)})});
 /* ---------- ABOUT 콘텐츠 (경력기술서 기준) ---------- */
 const ABOUT_INTRO=[
-  "실사 기반 배경 아트와 레벨 제작 분야에서 16년 이상의 경험을 쌓았으며, 3개 프로젝트에서 팀장·파트장을 맡아 배경 제작 업무를 담당했습니다.",
-  "Unreal Engine 기반의 레벨 구축과 지형 제작부터 중원경·Matte Painting, Lighting 및 Camera 연출까지 배경 제작 전반에 걸친 실무 경험을 보유하고 있습니다.",
-  "프로젝트의 장르와 플레이 방식, 지향하는 비주얼을 이해하고 레퍼런스 리서치를 통해 명확한 제작 방향을 설정합니다.<br>유관 부서와의 긴밀한 커뮤니케이션을 바탕으로 피드백을 반영하고, 지속적인 폴리싱을 통해 프로젝트의 의도를 충실히 구현하며 결과물의 완성도를 높이는 것을 중요하게&nbsp;생각합니다."
+  "실사 기반 배경 아트 및 레벨 제작 분야에서 19년 이상의 경험을 쌓았으며, 3개 프로젝트에서 팀장·파트장을 맡아 배경 제작 업무를 수행했습니다.",
+  "Unreal Engine 기반의 레벨 구축과 지형 제작부터 중원경, Matte Painting, Lighting, Camera 연출까지 배경 제작 전반에 걸친 실무 경험을 보유하고 있습니다.",
+  "프로젝트의 장르와 플레이 방식, 지향하는 비주얼을 이해하고 레퍼런스 리서치를 통해 명확한 제작 방향을 설정합니다.<br>유관 부서와의 긴밀한 협업을 바탕으로 피드백을 반영하고, 지속적인 폴리싱을 통해 프로젝트의 의도를 충실히 구현하며 결과물의 완성도를 높입니다."
 ];
 const ABOUT_DO=[
   ["Level Design","공간 설계 및 구성",["레벨 디자인 및 블록아웃","기획, 컨셉 팀워크","디테일 작업 및 반복 개선"]],
@@ -539,16 +563,18 @@ const HI=u=>u.replace(/\.jpg$/,"@4k.jpg");
 const IMGT=(u,hi,sizes,lazy=true,alt="")=>`<img src="${u}"${hi?` srcset="${u} 1920w, ${HI(u)} 3840w" sizes="${sizes}"`:""} alt="${esc(alt)}"${lazy?' loading="lazy"':""}>`;
 const SZ_PAIR="(max-width:760px) 100vw, 50vw";
 
+const HOME_PICK={"001":["home_rock","g04","home_truck"],"002":["g01","g06","g03"],"003":["g01","g15","g07"],"004":["g17","g08","g11"]};
+function homeImgs(p){return [p.card,...(HOME_PICK[p.n]||[]).map(f=>`img/${p.n}/${f}.jpg`)]}
 function mainHTML(){
   return `
 <section class="home" id="top" data-tone="dark">
-  <div class="slides">${P.slice(0,4).map((p,i)=>`<div class="slide${i===0?" on":""}" data-i="${i}">${IMGT(p.card,p.cardHi,"100vw",i!==0,p.t)}</div>`).join("")}</div>
+  <div class="slides">${P.slice(0,4).map((p,i)=>`<div class="slide${i===0?" on":""}" data-i="${i}">${homeImgs(p).map((u,k)=>`<img src="${u}" alt="${esc(p.t)}" decoding="async">`).join("")}</div>`).join("")}</div>
   <div class="hl"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
   <div class="hin">
     <div class="tag mono">Portfolio 2026 · Environment Art</div>
     <h1 class="nm">Sangyoun<br>Won<span class="nk">원상연</span></h1>
-    <p class="sum">16년 이상의 배경 아트 및 레벨 제작 경험을 바탕으로,<br>프로젝트의 의도를 이해하고 협업과 지속적인 폴리싱을 통해 완성도 높은 결과물을 추구합니다.</p>
-    <div class="stats mono"><div><b>16+</b><span>Years</span></div><div><b>03</b><span>Lead roles</span></div><div><b>05</b><span>Projects</span></div></div>
+    <p class="sum">19년 이상의 배경 아트 및 레벨 제작 경험을 바탕으로,<br>명확한 방향 설정과 유기적인 협업을 통해 프로젝트의 완성도를 높입니다.</p>
+    <div class="stats mono"><div><b>19+</b><span>Years</span></div><div><b>03</b><span>Lead roles</span></div><div><b>05</b><span>Projects</span></div></div>
     <div class="foot2">
       <div class="prog mono"><div class="bars">${P.slice(0,4).map((p,i)=>`<i data-i="${i}"></i>`).join("")}</div><span id="hcount">01 / 04</span></div>
       <div class="cap2"><a id="hcap" data-go="${P[0].n}"><span class="k mono" id="hk"></span><div class="t" id="ht"></div><div class="s mono" id="hs"></div></a>
@@ -651,17 +677,22 @@ function moveInd(anim){
 addEventListener("resize",()=>moveInd(false));
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>moveInd(false));
 let navT=null,navAutoOn=false;
-function measureNav(){if(!nav.classList.contains("away"))nav.style.setProperty("--nh",nav.offsetHeight+"px")}
+function measureNav(){
+  if(nav.classList.contains("away"))return;
+  if(nav.getAnimations().some(a=>a.playState==="running")){setTimeout(measureNav,900);return}   /* 펼쳐지는 도중 높이를 재면 --nh가 작게 고정되어 메뉴가 깨짐 */
+  const h=nav.offsetHeight;if(h>=36)nav.style.setProperty("--nh",h+"px");
+}
 addEventListener("resize",measureNav);
 function setAway(b){nav.classList.toggle("away",b&&navAutoOn)}
 let mx=-1,my=-1;
 addEventListener("mousemove",e=>{mx=e.clientX;my=e.clientY},{passive:true});
 /* 메뉴 위 또는 메뉴가 나타나는 위쪽 영역에 마우스가 있으면 숨기지 않는다 (바에 올려 메뉴가 내려오는 중에 다시 사라지는 문제 방지) */
 function nearNav(){return nav.matches(":hover")||(my>=0&&my<90&&Math.abs(mx-innerWidth/2)<nav.offsetWidth/2+40)}
-function armHide(){clearTimeout(navT);if(navAutoOn)navT=setTimeout(()=>{if($("modal").classList.contains("on"))return;if(nearNav())armHide();else setAway(true)},800)}
+function armHide(ms=800){clearTimeout(navT);if(navAutoOn)navT=setTimeout(()=>{if($("modal").classList.contains("on"))return;if(nearNav())armHide();else setAway(true)},ms)}
 function navShow(){setAway(false);armHide()}
-function navAuto(on){navAutoOn=on;navShow()}
-["wheel","touchmove","scroll","keydown"].forEach(ev=>addEventListener(ev,navShow,{passive:true}));
+function navAuto(on){navAutoOn=on;setAway(false);armHide(1600)}      /* 진입 시 전체 메뉴를 잠깐 보여준 뒤 미니로 */
+function navHold(){if(!nav.classList.contains("away"))armHide()}       /* 휠·스크롤은 열린 메뉴의 타이머만 갱신, 미니 상태는 열지 않음 */
+["wheel","touchmove","scroll","keydown"].forEach(ev=>addEventListener(ev,navHold,{passive:true}));
 nav.addEventListener("mouseenter",()=>{setAway(false);clearTimeout(navT)});
 nav.addEventListener("mouseleave",navShow);
 /* 접힌(미니 바) 상태에서 터치하면 메뉴가 펼쳐짐 */
@@ -747,10 +778,19 @@ addEventListener("resize",()=>{if(heroApply)heroApply()});
 
 
 /* ---------- HOME slideshow (천천히 자동 전환, 호버/탭 숨김 시 일시정지) ---------- */
-const HOME={i:0,t:null,dur:6500,ready:false,paused:false,start:Date.now(),off:0};
+const HOME={i:0,t:null,dur:8000,ready:false,paused:false,start:Date.now(),off:0};
+function showImg(e,done){const go=()=>{e.classList.add("cur");if(done)done()};if(e.complete&&e.naturalWidth)go();else e.addEventListener("load",go,{once:true})}   /* 로드 전 사진이 먼저 보여 검게 나오는 것을 방지 */
 function homeShow(i,off=0){
   const n=Math.min(4,P.length);HOME.i=(i+n)%n;HOME.start=Date.now()-off;const p=P[HOME.i],root=$("vMain").querySelector(".home");if(!root)return;
-  root.querySelectorAll(".slide").forEach((el,k)=>el.classList.toggle("on",k===HOME.i));
+  root.querySelectorAll(".slide").forEach((el,k)=>{el.classList.toggle("on",k===HOME.i);if(k!==HOME.i)el.querySelectorAll("img.cur").forEach(e=>e.classList.remove("cur"))});
+  clearTimeout(HOME.sub);const im=[...root.querySelectorAll(".slide")[HOME.i].querySelectorAll("img")];
+  HOME.vis=HOME.vis||[];if(HOME.lastI!==HOME.i){HOME.vis[HOME.i]=(HOME.vis[HOME.i]===undefined?0:HOME.vis[HOME.i]+1);HOME.lastI=HOME.i}   /* 일시정지 후 이어보기에서는 조합 유지 */
+  const pick=(HOME.vis[HOME.i]%2?[2,3]:[0,1]).filter(k=>im[k]),seg=HOME.dur/pick.length;
+  let c=Math.min(pick.length-1,Math.floor(off/seg));                                      /* 이어보기면 지난 시간만큼 건너뛰어 노출 시간을 균등하게 */
+  void root.offsetWidth;                                                                   /* 삽입 직후에도 확대·이동 전환이 시작되도록 스타일 확정 */
+  im.forEach((e,k)=>{if(k!==pick[c])e.classList.remove("cur")});showImg(im[pick[c]]);
+  if(pick.length>1&&!matchMedia("(prefers-reduced-motion:reduce)").matches){
+    let el=off;const step=()=>{if(c>=pick.length-1)return;HOME.sub=setTimeout(()=>{if(HOME.paused)return;const prev=im[pick[c]],nxt=im[pick[c+1]];c++;el=seg*c;showImg(nxt,()=>prev.classList.remove("cur"));step()},seg*(c+1)-el)};step()}
   root.querySelectorAll(".bars i").forEach((el,k)=>{el.classList.remove("on");el.classList.toggle("done",k<HOME.i);el.style.animationDelay=k===HOME.i&&off?"-"+off+"ms":"";if(k===HOME.i){void el.offsetWidth;el.classList.add("on")}});
   $("hcount").textContent=String(HOME.i+1).padStart(2,"0")+" / "+String(n).padStart(2,"0");
   $("hk").textContent="/ "+p.n;$("ht").textContent=p.t;$("hs").textContent=p.tags[0]+" · "+p.studio;
@@ -763,23 +803,48 @@ function homeStop(){clearTimeout(HOME.t);HOME.paused=true}
 function hlFlow(r){
   const els=[...r.querySelectorAll(".hl i")],n=els.length;if(!n||r._hl)return;r._hl=true;
   const still=matchMedia("(prefers-reduced-motion:reduce)").matches,t0=performance.now();
-  let mx=0,my=0,ms=0,hv=0,tg=0;                                   /* 마우스 위치, 부드럽게 따라가는 값, 호버 세기 */
+  let mx=0,my=0,ms=0,hv=0,tg=0,T=0,last=performance.now();const lit=new Set([1,5]),env=[],pk=a=>a[Math.floor(Math.random()*a.length)];let nextSel=2;const angs=[],wrap=a=>(((a%360)+540)%360)-180;
+  const LEV=[.036,.02,.012];let li=1,mul=1,segEnd=3,PP=0,vel=.02;                      /* 속도 단계: 강 > 중 > 약 순환, 구간 길이·세기는 조금씩 랜덤 */                                         /* 마우스 x, 부드럽게 따라가는 x, 호버 세기 */
   r.addEventListener("mousemove",e=>{const b=r.getBoundingClientRect();mx=e.clientX-b.left;my=e.clientY-b.top;tg=1});
   r.addEventListener("mouseleave",()=>{tg=0});
   function tick(now){
     if(!r.isConnected)return;
-    const t=still?0:(now-t0)/1000,W=r.clientWidth,Hh=r.clientHeight;
-    const ox=-W*.1,oy=Hh*1.65,r0=Hh*.7,r1=Math.hypot(W-ox,oy),sg=Math.max(120,W*.12);   /* 모든 원이 같은 중심(왼쪽 아래) */
-    const rm=Math.hypot(mx-ox,my-oy);ms+=(rm-ms)*.14;hv+=(tg-hv)*.08;
+    const dt=Math.min(.1,(now-last)/1000);last=now;ms+=(mx-ms)*.14;hv+=(tg-hv)*.12;T+=dt;
+    if(!still){if(T>=segEnd){li=(li+1)%3;mul=.88+Math.random()*.24;segEnd=T+4+Math.random()*4}vel+=(LEV[li]*mul-vel)*(1-Math.exp(-dt/1.6));PP+=vel*dt}   /* 목표 속도로 미끄러지듯 전환 */
+    const t=still?0:T,W=r.clientWidth,Hh=r.clientHeight,sg=Math.max(120,W*.12);
+    const vis=k=>els[k]._vis!==false&&(els[k]._len===undefined||els[k]._len>=24);                                  /* 직전 프레임에서 호가 hero 안에 보이는 원만 선택 대상 */
+    for(const k of [...lit])if(!vis(k))lit.delete(k);                      /* 화면 밖으로 나간 선은 제외 */
+    if(T>=nextSel){nextSel=T+3+Math.random()*4;                            /* 3~7초마다 밝은 선 구성이 바뀜: 항상 1~3개만 */
+      const cand=[...Array(n).keys()].filter(k=>vis(k)&&!lit.has(k)),cur=[...lit];
+      if(lit.size<=1&&cand.length)lit.add(pk(cand));else if(lit.size>=3)lit.delete(pk(cur));else if(Math.random()<.5&&cand.length)lit.add(pk(cand));else lit.delete(pk(cur))}
+    if(!lit.size){const cand=[...Array(n).keys()].filter(vis);if(cand.length)lit.add(pk(cand))}
     els.forEach((el,i)=>{
-      const u=(((i+.5)/n-t*.016)%1+1)%1,ph=t*.32;                       /* 반지름이 줄며 왼쪽 아래로 천천히 흐름 */
-      let rd=r0+(u+.7/(2*Math.PI)*(Math.sin(2*Math.PI*u+ph)-Math.sin(ph)))*(r1-r0);   /* 간격이 물결처럼 늘고 줄어듦 */
-      const g=Math.exp(-(((rd-ms)/sg)**2));
-      rd+=hv*.35*(rd-ms)*g;                                             /* 커서 주변 원은 부드럽게 밀려남 */
-      el.style.setProperty("--d",(rd*2).toFixed(0)+"px");
-      el.style.transform="translate("+(ox-rd).toFixed(1)+"px,"+(oy-Hh/2).toFixed(1)+"px)";
+      const u=(((i+.5)/n-PP)%1+1)%1,ph=.8;     /* 속도에 강약이 있지만 항상 왼쪽으로만 */                       /* 왼쪽으로 천천히 흐름 */
+      let x=(u+.7/(2*Math.PI)*(Math.sin(2*Math.PI*u+ph)-Math.sin(ph)))*W; /* 간격이 물결처럼 늘고 줄어듦 */
+      x-=hv*.35*(x-ms)*Math.exp(-(((x-ms)/sg)**2));                      /* 커서 주변 원은 부드럽게 몰려듦 */
+      const k1=Math.sin(i*12.9898)*43758.5453,k2=Math.sin(i*78.233)*12543.1234,a1=k1-Math.floor(k1),a2=k2-Math.floor(k2);
+      const R=Hh*(1.4+.4*a1),oy=Hh*(.7+.4*a2)+Math.sin(t*.12+i*1.7)*Hh*.03;   /* 원마다 중심·크기가 달라 일부는 살짝 교차 */
+      el.style.setProperty("--d",(R*2).toFixed(0)+"px");
+      el.style.transform="translate("+(x-2*R).toFixed(1)+"px,"+(oy-Hh/2).toFixed(1)+"px)";   /* x = 원의 오른쪽 끝 */
       el.style.opacity=Math.min(1,u*10,(1-u)*10).toFixed(2);
-      el.style.setProperty("--a",(.08+hv*g*.45).toFixed(3));            /* 가까울수록 밝아짐 */
+      el.style.setProperty("--a",".08");
+      /* 밝은 구간: 화면에 보이는 호 안에서만 위에서 아래로 내려오고, 아래로 빠지면 위에서 다시 시작 */
+      const ctr=oy,cxx=x-R;let v0=null,v1=null;
+      for(let t=0;t<=180;t+=2){const rad=t*Math.PI/180,px=cxx+R*Math.sin(rad),py=ctr-R*Math.cos(rad);if(px>=0&&px<=W&&py>=0&&py<=Hh){if(v0===null)v0=t;v1=t}}   /* 호 중 hero 안에 있는 각도 범위 */
+      const sp=300*(.85+.3*(.5+.5*Math.sin(T*.3)))/R*57.2958;      /* 원 크기와 관계없이 화면에서 같은 속도(px/초)로 이동 → 각속도로 환산 */
+      const cx=cxx,mAng=Math.atan2(mx-cx,-(my-oy))*180/Math.PI,dm=Math.abs(Math.hypot(mx-cx,my-oy)-R),w=hv*Math.exp(-((dm/(W*.22))**2));
+      const hasArc=v0!==null;el._vis=hasArc;el._len=hasArc?v1-v0:0;
+      if(hasArc){
+        if(angs[i]===undefined||angs[i]<v0-15||angs[i]>v1+15)angs[i]=v0-15+(angs[i]===undefined?(v1-v0+30)*((i*.37)%1):0);   /* 범위를 벗어나면 위쪽 시작점으로 */
+        const dl=wrap(mAng-(angs[i]+15)),near=Math.exp(-((dl/22)**2)),ap=Math.max(-60,Math.min(60,dl*3.5));
+        angs[i]+=(sp*(1-.9*w)+w*ap)*dt;                                    /* 호버하면 마우스 위치 쪽으로 천천히 모여 머묾 */
+        if(w<.3&&angs[i]>v1+15)angs[i]=v0-15;                               /* 아래로 빠지면 위에서 다시 시작 */
+        el._near=near;
+      }
+      const near=el._near||0;
+      el.style.setProperty("--g",(angs[i]||0).toFixed(1)+"deg");
+      env[i]=(env[i]||0)+((lit.has(i)?1:0)-(env[i]||0))*(1-Math.exp(-dt/1.1));const e=Math.max(env[i],w*near);                 /* 선택된 선만 부드럽게 밝아지고, 호버 근처 선도 밝아짐 */
+      el.style.setProperty("--gb",(.26*e+.14*w*near).toFixed(3));el.style.setProperty("--gi",(.06*e+.08*w*near).toFixed(3));   /* 모이면 선과 안쪽 빛이 조금 더 밝아짐(안쪽 빛만) */                                 /* 호버해도 선 색은 동일 */
     });
     if(!still)requestAnimationFrame(tick);
   }
@@ -789,8 +854,13 @@ function initHome(){
   const r=$("vMain").querySelector(".home");if(r)hlFlow(r);if(!r||HOME.ready)return;HOME.ready=true;
   $("hprev").onclick=()=>homeShow(HOME.i-1);$("hnext").onclick=()=>homeShow(HOME.i+1);
   r.querySelectorAll(".bars i").forEach(el=>el.onclick=()=>homeShow(+el.dataset.i));
-  r.addEventListener("mouseenter",()=>{HOME.off=Date.now()-HOME.start;HOME.paused=true;clearTimeout(HOME.t);r.classList.add("paused")});
-  r.addEventListener("mouseleave",()=>{HOME.paused=false;r.classList.remove("paused");homeShow(HOME.i,HOME.off)});
+  /* 호버해도 프로젝트 로테이션은 멈추지 않음(원형 선 호버 효과와 함께 계속 진행) */
+  const homeResume=()=>{if(!HOME.paused||view!=="main")return;HOME.paused=false;r.classList.remove("paused");homeShow(HOME.i,HOME.off||0)};
+  setInterval(()=>{                                                                         /* 안전장치: 타이머/호버 이벤트가 유실돼도 로테이션이 멈추지 않게 */
+    if(view!=="main"||document.hidden||matchMedia("(prefers-reduced-motion:reduce)").matches)return;
+    if(HOME.paused){if(!r.matches(":hover"))homeResume()}
+    else if(Date.now()-HOME.start>HOME.dur+1500)homeShow(HOME.i+1)
+  },1000);
   document.addEventListener("visibilitychange",()=>{if(document.hidden){if(view==="main"&&!HOME.paused)HOME.off=Date.now()-HOME.start;clearTimeout(HOME.t)}else if(view==="main"&&!HOME.paused){homeShow(HOME.i,HOME.off)}});
   r.querySelectorAll("[data-hgo]").forEach(a=>a.onclick=e=>{e.preventDefault();lockNav("sec:"+a.dataset.hgo);const t=$(a.dataset.hgo);window.scrollTo({top:t.getBoundingClientRect().top+scrollY-(a.dataset.hgo==="intro"?10:0),behavior:"smooth"})});
 }
@@ -848,7 +918,115 @@ addEventListener("scroll",spy,{passive:true});
 addEventListener("hashchange",route);
 $("close").onclick=()=>$("modal").classList.remove("on");
 addEventListener("keydown",e=>{if(!$("modal").classList.contains("on"))return;if(e.key==="Escape")$("modal").classList.remove("on");else if(e.key==="ArrowRight")openLB(LB.i+1,1);else if(e.key==="ArrowLeft")openLB(LB.i-1,-1)});
+
+/* ---------- 텍스트 등장 모션 + 숫자 카운트업 ---------- */
+const RV={pending:[]};
+function rvSp(w,el){let n=w.previousSibling;if(!n&&w.parentElement!==el)n=w.parentElement.previousSibling;return !!(n&&n.nodeType===3&&n.nodeValue===" ")}   /* 원본에서 공백이 있던 자리인지 */
+function rvSplit(el){
+  const orig=el.innerHTML,tn=[],wk=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);
+  while(wk.nextNode())tn.push(wk.currentNode);
+  tn.forEach(n=>{const f=document.createDocumentFragment();n.nodeValue.split(/([ \t\n\r]+)/).forEach(t=>{if(!t)return;if(/^[ \t\n\r]+$/.test(t))f.appendChild(document.createTextNode(" "));else{const w=document.createElement("span");w.className="rv-w";w.textContent=t;f.appendChild(w)}});n.replaceWith(f)});
+  const ws=[...el.querySelectorAll(".rv-w")];if(!ws.length)return null;
+  const cs=getComputedStyle(el),lh=parseFloat(cs.lineHeight)||parseFloat(cs.fontSize)*1.3;
+  let line=0,pb=null;
+  let bad=false;
+  ws.forEach(w=>{const r=w.getBoundingClientRect();if(r.height>lh*1.6)bad=true;const b=r.bottom;if(pb!==null&&b-pb>lh*.5)line++;w._l=line;pb=b});
+  if(bad){el.innerHTML=orig;return null}                                  /* 한 단어가 여러 줄로 쪼개진 경우(좁은 화면의 긴 단어)는 분할하지 않고 원본 유지 */   /* 줄 판정: 아래로 반 줄 이상 내려가면 새 줄 */
+  const groups=[];ws.forEach(w=>{(groups[w._l]=groups[w._l]||[]).push({w,a:w.parentElement!==el?w.parentElement:null,sp:rvSp(w,el)})});
+  el.innerHTML="";const lines=[];
+  groups.forEach((g,gi)=>{
+    const ln=document.createElement("span"),li=document.createElement("span");ln.className="rv-ln";li.className="rv-li";ln.appendChild(li);
+    let curA=null,box=li,first=true;
+    g.forEach(({w,a,sp})=>{
+      if(a!==curA){curA=a;box=a?li.appendChild(a.cloneNode(false)):li}
+      if(!first&&sp)box.appendChild(document.createTextNode(" "));first=false;
+      box.appendChild(w);
+    });
+    el.appendChild(ln);lines.push(li);
+  });
+  return {el,orig,lines};
+}
+function rvRun(parts,base,step){                               /* parts: rvSplit 결과들. 줄마다 step초 간격으로 올라옴 */
+  parts.forEach(p=>p.lines.forEach((li,i)=>li.style.setProperty("--d",(base+i*step).toFixed(3)+"s")));
+}
+function rvCount(el,delay,dur,n,pad,suf){                       /* 올라오는 모션 중 첫 텍스트 노드만 바꿔서 카운팅 */
+  const wk=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);const tn=wk.nextNode();if(!tn)return;
+  const t0=performance.now()+delay*1000;
+  (function tick(now){const k=Math.min(1,Math.max(0,(now-t0)/(dur*1000))),v=Math.round(n*(1-Math.pow(1-k,3)));tn.nodeValue=String(v).padStart(pad,"0")+suf;if(k<1)requestAnimationFrame(tick)})(performance.now());
+}
+function rvFade(els,base,step,cls="rv-fade"){els.forEach((e,i)=>{e.classList.add(cls,"rv-nt");e.style.setProperty("--d",(base+i*step).toFixed(3)+"s")})}
+function rvDone(parts,fades,ms){setTimeout(()=>{parts.forEach(p=>{p.el.innerHTML=p.orig;p.el.classList.remove("rv-on","rv-dot");p.el.style.removeProperty("--dd")});fades.forEach(e=>{e.classList.remove("rv-fade","rv-fade-o","rv-row","rv-on","rv-nt");e.style.removeProperty("--d")})},ms)}   /* 끝나면 원래 마크업으로 복원(반응형 줄바꿈 유지) */
+
+function rvAccOpen(a){                                               /* 토글을 펼칠 때만 안쪽 항목이 올라옴 (선이 그려진 뒤 글씨) */
+  if(matchMedia("(prefers-reduced-motion:reduce)").matches||a._rvBusy)return;a._rvBusy=true;
+  const rows=[...a.querySelectorAll(".ab-row")],parts=[],fades=[];
+  rows.forEach((r,ri)=>{
+    const d0=.1+ri*.12;r.classList.add("rv-row","rv-nt");r.style.setProperty("--d",d0.toFixed(2)+"s");fades.push(r);
+    [r.querySelector(".l"),r.querySelector(".r")].filter(e=>e&&!e.querySelector(".chips")).forEach(e=>{const p=rvSplit(e);if(p){p.lines.forEach((li,i)=>li.style.setProperty("--d",(d0+.5+i*.133).toFixed(3)+"s"));parts.push(p)}});
+    const chips=[...r.querySelectorAll(".chip")];rvFade(chips,d0+.5,.05);fades.push(...chips);
+  });
+  void a.offsetWidth;a.querySelectorAll(".rv-nt").forEach(e=>e.classList.remove("rv-nt"));
+  requestAnimationFrame(()=>{parts.forEach(p=>p.el.classList.add("rv-on"));fades.forEach(e=>e.classList.add("rv-on"));
+    rvDone(parts,fades,3800+rows.length*120);setTimeout(()=>{a._rvBusy=false;rows.forEach(r=>r.style.removeProperty("--d"))},3900+rows.length*120)});
+}
+document.addEventListener("click",e=>{const h=e.target.closest(".about .ab-h");if(!h||h.getAttribute("aria-expanded")!=="true")return;const a=h.parentElement;(a.dataset.link?[...document.querySelectorAll(`.ab-acc[data-link="${a.dataset.link}"]`)]:[a]).forEach(x=>{if(x.classList.contains("open"))rvAccOpen(x)})});
+function revealMain(){
+  const root=$("vMain"),home=root.querySelector(".home");
+  if(!home||matchMedia("(prefers-reduced-motion:reduce)").matches){document.documentElement.classList.remove("rvpre");return}
+  const q=(s,r=root)=>[...r.querySelectorAll(s)];
+  const start=()=>{
+    if(RV.started)return;RV.started=true;
+    /* 히어로: 라벨 → 이름 → 소개 → 숫자(올라온 뒤 카운트업) */
+    const hs=[".tag",".nm",".sum"].map(sel=>rvSplit(home.querySelector(sel))).filter(Boolean);
+    if(hs[0]){hs[0].el.classList.add("rv-dot","rv-nt");hs[0].el.style.setProperty("--dd","0s")}
+    const stat=[];
+    q(".stats > div",home).forEach((d,i)=>{
+      const b=d.querySelector("b"),sp=d.querySelector("span");
+      const m=b.textContent.match(/^(\d+)(.*)$/),fin=b.textContent;b.textContent=m?"0".repeat(m[1].length)+m[2]:fin;   /* 0에서 시작 */
+      const pb=rvSplit(b);if(pb)pb.orig=fin;const ps=sp?rvSplit(sp):null;
+      stat.push({pb,ps,m,i});
+    });
+    const fades=[home.querySelector(".foot2")].filter(Boolean);
+    rvFade(fades,1.4,0);
+    document.documentElement.classList.remove("rvpre");
+    void home.offsetWidth;home.querySelectorAll(".rv-nt").forEach(e=>e.classList.remove("rv-nt"));
+    rvRun([hs[0]],0,.133);rvRun([hs[1]],.15,.133);rvRun([hs[2]],.7,.1);
+    stat.forEach(({pb,ps,m,i})=>{
+      const d0=.95+i*.12;if(pb)rvRun([pb],d0,.1);if(ps)rvRun([ps],d0+.1,.1);
+      if(pb&&m)rvCount(pb.el,d0+.55,1.6,+m[1],m[1].length,m[2]);                            /* 올라오는 중간쯤부터 카운트 */
+    });
+    const all=[...hs,...stat.flatMap(x=>[x.pb,x.ps]).filter(Boolean)];
+    requestAnimationFrame(()=>{all.forEach(p=>p.el.classList.add("rv-on"));fades.forEach(e=>e.classList.add("rv-on"))});
+    rvDone(all,fades,4600);
+    /* About: 항목마다 화면에 들어올 때 하나씩 올라옴 */
+    const ab=root.querySelector(".about");if(!ab)return;
+    const items=[];
+    const addSplit=(el)=>{const p=rvSplit(el);if(p)items.push({el,parts:[p],fades:[]})};
+    const addFade=(el)=>{rvFade([el],0,0);items.push({el,parts:[],fades:[el]})};
+    q(".no",ab).forEach(addFade);q(".ab-t",ab).forEach(addSplit);
+    q(".tags > span",ab).forEach(c=>{const pc=rvSplit(c);rvFade([c],0,0,"rv-fade-o");items.push({el:c,parts:pc?[pc]:[],fades:[c]})});   /* ENVIRONMENT ART / LEVEL BUILD 칩: 글씨는 올라오고 테두리는 나타남 */
+    q(".ab-h span",ab).forEach(addSplit);q(".ab-intro p",ab).forEach(addSplit);
+    q(".ab-row",ab).filter(r=>!r.closest(".ab-acc:not(.open)")).forEach(r=>{                                                           /* 경력 한 줄: 텍스트가 올라오고 줄 배경도 나타남 */
+      const parts=[r.querySelector(".l"),r.querySelector(".r b"),r.querySelector(".r .sub")].filter(Boolean).map(rvSplit).filter(Boolean);
+      r.classList.add("rv-row","rv-nt");items.push({el:r,parts,fades:[r],off:.5});
+    });
+    const io=new IntersectionObserver(es=>{
+      const hit=es.filter(e=>e.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top);
+      hit.forEach((e,k)=>{const it=items.find(x=>x.el===e.target);if(!it||it.done)return;it.done=true;io.unobserve(e.target);
+        const d=k*.09;
+        const off=it.off||0;it.parts.forEach(p=>p.lines.forEach((li,i)=>li.style.setProperty("--d",(d+off+i*.133).toFixed(3)+"s")));
+        it.fades.forEach(f=>f.style.setProperty("--d",d.toFixed(3)+"s"));
+        requestAnimationFrame(()=>{it.parts.forEach(p=>p.el.classList.add("rv-on"));it.fades.forEach(f=>f.classList.add("rv-on"));rvDone(it.parts,it.fades,4200+d*1000)})});
+    },{threshold:.2,rootMargin:"0px 0px -6% 0px"});
+    void ab.offsetWidth;ab.querySelectorAll(".rv-nt").forEach(e=>e.classList.remove("rv-nt"));
+    items.forEach(it=>io.observe(it.el));
+  };
+  (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(()=>requestAnimationFrame(start));
+  setTimeout(()=>{document.documentElement.classList.remove("rvpre")},3000);   /* 안전장치 */
+}
+if(!/[?&]norv/.test(location.search)&&!matchMedia("(prefers-reduced-motion:reduce)").matches&&(!location.hash||location.hash==="#/"||location.hash==="#"))document.documentElement.classList.add("rvpre");
 route();
+if(view==="main"&&!/[?&]norv/.test(location.search))revealMain();
 </script>
 </body>
 </html>
