@@ -497,14 +497,20 @@ html body .rv-w.rv-w{display:inline}
 .rv-fade.rv-on{opacity:1;transform:translateZ(0)}
 .rv-fade-o{opacity:0;transition:opacity 1s cubic-bezier(.77,0,.175,1) var(--d,0s)}
 .rv-fade-o.rv-on{opacity:1}
-.rv-nt,.rv-nt::before{transition:none!important}
+.rv-nt,.rv-nt::before,.rv-nt::after{transition:none!important}
+.rv-top,.rv-bot{position:relative}
+.rv-top{border-top-color:transparent!important}
+.rv-bot{border-bottom-color:transparent!important}
+.rv-top::before,.rv-bot::after{content:"";position:absolute;left:0;right:0;height:1px;background:var(--rv-lc,#b9b9b9);transform:scaleX(0);transform-origin:0 50%;transition:transform 1s cubic-bezier(.77,0,.175,1) var(--d,0s);pointer-events:none}   /* 가로선: 왼쪽에서 오른쪽으로 그려짐 */
+.rv-top::before{top:-1px}.rv-bot::after{bottom:-1px}
+.rv-top.rv-lon::before,.rv-bot.rv-lon::after{transform:scaleX(1)}
 .home .tag.rv-dot::before{opacity:0;transform:scale(0);transition:transform 1s cubic-bezier(.77,0,.175,1) var(--dd,0s),opacity .6s ease var(--dd,0s),background .8s}   /* 라벨 앞 빨간 점도 글씨와 함께 나타남 */
 .home .tag.rv-dot.rv-on::before{opacity:1;transform:none}
 .about .ab-row.rv-row{position:relative;border-top-color:transparent}                      /* 경력 가로선: 왼쪽에서 오른쪽으로 그려진 뒤 글씨가 올라옴 */
 .about .ab-row.rv-row::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:#b9b9b9;transform:scaleX(0);transform-origin:0 50%;transition:transform 1s cubic-bezier(.77,0,.175,1) var(--d,0s)}
 .about .ab-row.rv-row.rv-on::before{transform:none}
 .about .ab-acc .ab-row:first-child.rv-row::before{display:none}
-@media (prefers-reduced-motion:reduce){.about .ab-row.rv-row{border-top-color:#b9b9b9}.about .ab-row.rv-row::before{display:none}.rv-li{transform:none;transition:none}.rv-fade,.rv-fade-o{opacity:1;transform:none;transition:none}}
+@media (prefers-reduced-motion:reduce){.rv-top::before,.rv-bot::after{display:none}.about .ab-row.rv-row{border-top-color:#b9b9b9}.about .ab-row.rv-row::before{display:none}.rv-li{transform:none;transition:none}.rv-fade,.rv-fade-o{opacity:1;transform:none;transition:none}}
 </style>
 </head>
 <body>
@@ -961,7 +967,7 @@ function rvCount(el,delay,dur,n,pad,suf){                       /* 올라오는 
   (function tick(now){const k=Math.min(1,Math.max(0,(now-t0)/(dur*1000))),v=Math.round(n*(1-Math.pow(1-k,3)));tn.nodeValue=String(v).padStart(pad,"0")+suf;if(k<1)requestAnimationFrame(tick)})(performance.now());
 }
 function rvFade(els,base,step,cls="rv-fade"){els.forEach((e,i)=>{e.classList.add(cls,"rv-nt");e.style.setProperty("--d",(base+i*step).toFixed(3)+"s")})}
-function rvDone(parts,fades,ms){setTimeout(()=>{parts.forEach(p=>{p.el.innerHTML=p.orig;p.el.classList.remove("rv-on","rv-dot");p.el.style.removeProperty("--dd")});fades.forEach(e=>{e.classList.remove("rv-fade","rv-fade-o","rv-row","rv-on","rv-nt");e.style.removeProperty("--d")})},ms)}   /* 끝나면 원래 마크업으로 복원(반응형 줄바꿈 유지) */
+function rvDone(parts,fades,ms){setTimeout(()=>{parts.forEach(p=>{p.el.innerHTML=p.orig;p.el.classList.remove("rv-on","rv-dot");p.el.style.removeProperty("--dd")});fades.forEach(e=>{e.classList.remove("rv-fade","rv-fade-o","rv-row","rv-top","rv-bot","rv-lon","rv-on","rv-nt");e.style.removeProperty("--rv-lc");e.style.removeProperty("--d")})},ms)}   /* 끝나면 원래 마크업으로 복원(반응형 줄바꿈 유지) */
 
 function rvAccOpen(a){                                               /* 토글을 펼칠 때만 안쪽 항목이 올라옴 (선이 그려진 뒤 글씨) */
   if(matchMedia("(prefers-reduced-motion:reduce)").matches||a._rvBusy)return;a._rvBusy=true;
@@ -987,19 +993,28 @@ function revealDetail(){
   const fade=(sel,cls)=>root.querySelectorAll(sel).forEach(el=>{rvFade([el],0,0,cls||"rv-fade");items.push({el,parts:[],fades:[el]})});
   fade(".head .no","rv-fade-o");split(".head h1");
   root.querySelectorAll(".head .tags > span").forEach(c=>{const pc=rvSplit(c);rvFade([c],0,0,"rv-fade-o");items.push({el:c,parts:pc?[pc]:[],fades:[c]})});
-  split(".head .desc h2");split(".head .desc p");split(".head .info-l dt");
-  root.querySelectorAll(".head .info-l dd").forEach(el=>{if(el.querySelector(".chips"))return;const p=rvSplit(el);if(p)items.push({el,parts:[p],fades:[]})});
-  fade(".head .chip");
+  split(".head .desc h2");split(".head .desc p");
+  const dl=root.querySelector(".head .info-l");
+  if(dl){dl.classList.add("rv-top","rv-nt");dl.style.setProperty("--rv-lc","var(--line)");items.push({el:dl,parts:[],fades:[],lines:[dl]})}                         /* 정보 목록 위 가로선 */
+  root.querySelectorAll(".head .info-l > div").forEach(row=>{                                                                                         /* 정보 한 줄: 아래 가로선이 그려진 뒤 글씨/칩이 올라옴 */
+    const parts=[row.querySelector("dt"),row.querySelector("dd")].filter(e=>e&&!e.querySelector(".chips")).map(rvSplit).filter(Boolean);
+    const chips=[...row.querySelectorAll(".chip")];rvFade(chips,0,0);
+    row.classList.add("rv-bot","rv-nt");row.style.setProperty("--rv-lc","var(--line)");
+    items.push({el:row,parts,fades:[],lines:[row],chips,off:.5});
+  });
+  root.querySelectorAll(".sec").forEach((sec,k)=>{if(!k)return;sec.classList.add("rv-top","rv-nt");sec.style.setProperty("--rv-lc","#2a2b2f");items.push({el:sec,parts:[],fades:[],lines:[sec]})});   /* 섹션 구분선 */
   fade(".sec .lab","rv-fade-o");split(".sec h2");split(".sec li .rv-t");
   split(".next .lab");fade(".next .ncard");fade(".dfoot span","rv-fade-o");
   void root.offsetWidth;root.querySelectorAll(".rv-nt").forEach(e=>e.classList.remove("rv-nt"));
   const io=new IntersectionObserver(es=>{
     const hit=es.filter(e=>e.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top||a.boundingClientRect.left-b.boundingClientRect.left);
     hit.forEach((e,k)=>{const it=items.find(x=>x.el===e.target);if(!it||it.done)return;it.done=true;io.unobserve(e.target);
-      const d=Math.min(.9,k*.07);
-      it.parts.forEach(p=>p.lines.forEach((li,i)=>li.style.setProperty("--d",(d+i*.133).toFixed(3)+"s")));
+      const d=Math.min(.9,k*.07),off=it.off||0,ln=it.lines||[],ch=it.chips||[];
+      it.parts.forEach(p=>p.lines.forEach((li,i)=>li.style.setProperty("--d",(d+off+i*.133).toFixed(3)+"s")));
       it.fades.forEach(f=>f.style.setProperty("--d",d.toFixed(3)+"s"));
-      requestAnimationFrame(()=>{it.parts.forEach(p=>p.el.classList.add("rv-on"));it.fades.forEach(f=>f.classList.add("rv-on"));rvDone(it.parts,it.fades,4200+d*1000)})});
+      ln.forEach(l=>l.style.setProperty("--d",d.toFixed(3)+"s"));
+      ch.forEach((c,j)=>c.style.setProperty("--d",(d+off+j*.05).toFixed(3)+"s"));
+      requestAnimationFrame(()=>{it.parts.forEach(p=>p.el.classList.add("rv-on"));it.fades.forEach(f=>f.classList.add("rv-on"));ln.forEach(l=>l.classList.add("rv-lon"));ch.forEach(c=>c.classList.add("rv-on"));rvDone(it.parts,[...it.fades,...ln,...ch],4200+d*1000)})});
   },{threshold:0});
   items.forEach(it=>io.observe(it.el));root._rvIO=io;
 }
