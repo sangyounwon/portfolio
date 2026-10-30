@@ -165,7 +165,7 @@ button{font:inherit}
 .mcard .im{aspect-ratio:16/9;border-radius:6px;overflow:hidden;background:var(--c)}
 .mcard img{width:100%;height:100%;object-fit:cover;display:block}
 
-.big img,.mcard img{will-change:transform;transition:transform .6s}
+.big img,.mcard img{will-change:transform;transition:transform 2s cubic-bezier(.22,1,.36,1)}
 .big:hover img,.mcard:hover img,.big:focus-visible img,.mcard:focus-visible img{transform:scale(1.065)}
 @media (hover:none){.big:hover img,.mcard:hover img{transform:none}}
 .mcard .cap{display:flex;gap:10px;align-items:baseline;padding:12px 0 10px}
@@ -218,7 +218,7 @@ button{font:inherit}
 .chip svg{width:16px;height:16px;display:block;color:#3a3a3a;flex:none}
 
 .hz{position:relative;overflow:hidden;container-type:inline-size}
-.hz img{will-change:transform;transition:transform .6s;transform-origin:50% 0}
+.hz img{will-change:transform;transition:transform 2s cubic-bezier(.22,1,.36,1);transform-origin:50% 0}
 .hz:hover img{transform:scale(1.065)}
 .msn{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;align-items:start}.msn .mc{display:flex;flex-direction:column;gap:16px}.msn figure{background:#141518;border-radius:6px}.msn img{width:100%;height:auto;display:block}
 @media(max-width:760px){.msn{grid-template-columns:1fr 1fr;gap:10px}.msn .mc{gap:10px}}
@@ -348,7 +348,7 @@ button{font:inherit}
 .head .pg-no,.title .pg-no,.about .pg-no{color:#e8431f}
 @media (hover:none){}
 .home .foot2{margin-top:clamp(52px,8.5vh,96px)}
-.ncard img{transition:filter .45s ease,transform .6s;transform-origin:50% 0;will-change:transform}
+.ncard img{transition:filter .45s ease,transform 2s cubic-bezier(.22,1,.36,1);transform-origin:50% 0;will-change:transform}
 .ncard:hover img,.ncard:focus-visible img{transform:scale(1.065)}
 @media (hover:none){.ncard:hover img{transform:none}}
 .big img,.mcard img{transform-origin:50% 0}
@@ -379,7 +379,7 @@ button{font:inherit}
 .nav{transition:background .35s,box-shadow .35s,transform .55s cubic-bezier(.22,1,.36,1),opacity .4s}
 .nav.away{transform:translate(-50%,-170%);opacity:0;pointer-events:none}
 @media (prefers-reduced-motion:reduce){.nav{transition:background .35s,box-shadow .35s,opacity .2s}}
-.gallery figure img{will-change:transform;transition:transform .6s;transform-origin:50% 0}
+.gallery figure img{will-change:transform;transition:transform 2s cubic-bezier(.22,1,.36,1);transform-origin:50% 0}
 .gallery figure:hover img{transform:scale(1.065)}
 @media (hover:none){.gallery figure:hover img{transform:none}}
 .mcard .im::before{background:linear-gradient(180deg,rgba(0,0,0,.5),rgba(0,0,0,0) 50%),linear-gradient(0deg,rgba(0,0,0,.55),rgba(0,0,0,0) 45%)}
