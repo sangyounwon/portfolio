@@ -516,6 +516,9 @@ html body .rv-w.rv-w{display:inline}
 .about .ab-row.rv-row.rv-on::before{transform:none}
 .about .ab-acc .ab-row:first-child.rv-row::before{display:none}
 @media (prefers-reduced-motion:reduce){.rv-top::before,.rv-bot::after{display:none}.about .ab-row.rv-row{border-top-color:#b9b9b9}.about .ab-row.rv-row::before{display:none}.rv-li{transform:none;transition:none}.rv-fade,.rv-fade-o{opacity:1;transform:none;transition:none}}
+/* 닫기 버튼: 항상 ✕만 표시 (CLOSE 글자 ↔ ✕ 전환 없음) */
+.modal .x,.modal .x.min{padding:9px 12px;transform:none}
+.modal .x .xx,.modal .x.min .xx{font-size:13px}
 </style>
 </head>
 <body>
@@ -525,7 +528,7 @@ html body .rv-w.rv-w{display:inline}
 <div class="view" id="vMain"></div>
 <div class="view" id="vDetail"></div>
 <div class="zc" id="zc" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M7.25 2h1.5v5.25H14v1.5H8.75V14h-1.5V8.75H2v-1.5h5.25z"/></svg></div>
-<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Image viewer"><button class="x" id="close" aria-label="Close"><span class="lbl">CLOSE</span><span class="xx" aria-hidden="true">✕</span></button><div class="lbwrap">
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Image viewer"><button class="x" id="close" aria-label="Close"><span class="xx" aria-hidden="true">✕</span></button><div class="lbwrap">
   <div class="vp" id="vp">
     <img id="mImg" alt=""><img id="mImg2" alt="">
     <div class="cur" id="cur"><svg viewBox="0 0 16 16"><path d="m5.675 2-1.050 1.050L9.575 8l-4.950 4.950L5.675 14l6-6-6-6Z"/></svg></div>
