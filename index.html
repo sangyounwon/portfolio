@@ -85,9 +85,8 @@ button{font:inherit}
 
 .bblur{position:fixed;left:0;right:0;bottom:0;height:clamp(128px,22vh,220px);z-index:12;pointer-events:none}
 .bblur i{position:absolute;inset:0;display:block}
-.bblur i:nth-child(1){-webkit-backdrop-filter:blur(1.5px);backdrop-filter:blur(1.5px);-webkit-mask-image:linear-gradient(to top,#000 0%,#000 30%,transparent 62%);mask-image:linear-gradient(to top,#000 0%,#000 30%,transparent 62%)}
-.bblur i:nth-child(2){-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);-webkit-mask-image:linear-gradient(to top,#000 0%,#000 18%,transparent 48%);mask-image:linear-gradient(to top,#000 0%,#000 18%,transparent 48%)}
-.bblur i:nth-child(3){-webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);-webkit-mask-image:linear-gradient(to top,#000 0%,#000 8%,transparent 34%);mask-image:linear-gradient(to top,#000 0%,#000 8%,transparent 34%)}
+.bblur i:nth-child(1){-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);-webkit-mask-image:linear-gradient(to top,#000 0%,#000 18%,transparent 48%);mask-image:linear-gradient(to top,#000 0%,#000 18%,transparent 48%)}
+.bblur i:nth-child(2){-webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);-webkit-mask-image:linear-gradient(to top,#000 0%,#000 8%,transparent 34%);mask-image:linear-gradient(to top,#000 0%,#000 8%,transparent 34%)}
 @media(max-width:760px){.bblur{height:112px}}
 
 .title .pg-no,.about .pg-no{color:#e8431f}
@@ -165,7 +164,7 @@ button{font:inherit}
 .mcard .im{aspect-ratio:16/9;border-radius:6px;overflow:hidden;background:var(--c)}
 .mcard img{width:100%;height:100%;object-fit:cover;display:block}
 
-.big img,.mcard img{will-change:transform;transition:transform 2s cubic-bezier(.22,1,.36,1)}
+.big img,.mcard img{transition:transform 2s cubic-bezier(.22,1,.36,1)}
 .big:hover img,.mcard:hover img,.big:focus-visible img,.mcard:focus-visible img{transform:scale(1.065)}
 @media (hover:none){.big:hover img,.mcard:hover img{transform:none}}
 .mcard .cap{display:flex;gap:10px;align-items:baseline;padding:12px 0 10px}
@@ -218,7 +217,7 @@ button{font:inherit}
 .chip svg{width:16px;height:16px;display:block;color:#3a3a3a;flex:none}
 
 .hz{position:relative;overflow:hidden;container-type:inline-size}
-.hz img{will-change:transform;transition:transform 2s cubic-bezier(.22,1,.36,1);transform-origin:50% 0}
+.hz img{transition:transform 2s cubic-bezier(.22,1,.36,1);transform-origin:50% 0}
 .hz:hover img{transform:scale(1.065)}
 .msn{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;align-items:start}.msn .mc{display:flex;flex-direction:column;gap:16px}.msn figure{background:#141518;border-radius:6px}.msn img{width:100%;height:auto;display:block}
 @media(max-width:760px){.msn{grid-template-columns:1fr 1fr;gap:10px}.msn .mc{gap:10px}}
@@ -268,6 +267,7 @@ button{font:inherit}
 .grp .gh b{font-weight:400;color:#d8d8da}
 .grp .gg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .grp figure{aspect-ratio:16/9;border-radius:6px;overflow:hidden;background:#1a1b1e;cursor:zoom-in}
+.grp figure.vid{cursor:pointer}
 .grp figure.full{grid-column:1/-1}
 .grp img{width:100%;height:100%;object-fit:cover;display:block}
 .hero video{width:100%;height:100%;object-fit:cover;object-position:center 55%;display:block}
@@ -328,7 +328,12 @@ button{font:inherit}
 .zc.lens{-webkit-backdrop-filter:url(#lg) blur(8px) saturate(1.9) brightness(1.08);backdrop-filter:url(#lg) blur(8px) saturate(1.9) brightness(1.08)}
 .zc::after{content:"";position:absolute;inset:0;border-radius:50%;padding:1px;pointer-events:none;z-index:-1;background:linear-gradient(140deg,rgba(255,255,255,.44),rgba(255,255,255,0) 38%,rgba(255,255,255,0) 62%,rgba(255,255,255,.24));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
 .zc svg{width:20px;height:20px;fill:#fff;display:block}
-@media (hover:hover) and (pointer:fine){.zc{display:flex}.zc.on{opacity:1}#vDetail .gallery figure,#vDetail .grp figure:not(.vid){cursor:none}}
+.zc .i-pause,.zc .i-play{display:none}   /* 영상 위에서는 ⏸(재생 중) / ▶(일시정지 중) */
+.zc.vm .i-plus{display:none}
+.zc.vm .i-pause{display:block}
+.zc.vm.ps .i-pause{display:none}
+.zc.vm.ps .i-play{display:block}
+@media (hover:hover) and (pointer:fine){.zc{display:flex}.zc.on{opacity:1}#vDetail .gallery figure,#vDetail .grp figure:not(.vid),#vDetail .grp figure.vid{cursor:none}}
 .vp #mImg2{visibility:hidden}
 .modal .x{isolation:isolate;border:0;border-radius:999px;padding:9px 18px;color:#eceef0;letter-spacing:.08em;background:rgba(255,255,255,.10);-webkit-backdrop-filter:blur(10px) saturate(1.9) brightness(1.08);backdrop-filter:blur(10px) saturate(1.9) brightness(1.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.32),inset 0 -1px 0 rgba(255,255,255,.07);transition:background .25s}
 .modal .x:hover{background:rgba(255,255,255,.2)}
@@ -348,7 +353,7 @@ button{font:inherit}
 .head .pg-no,.title .pg-no,.about .pg-no{color:#e8431f}
 @media (hover:none){}
 .home .foot2{margin-top:clamp(52px,8.5vh,96px)}
-.ncard img{transition:filter .45s ease,transform 2s cubic-bezier(.22,1,.36,1);transform-origin:50% 0;will-change:transform}
+.ncard img{transition:filter .45s ease,transform 2s cubic-bezier(.22,1,.36,1);transform-origin:50% 0}
 .ncard:hover img,.ncard:focus-visible img{transform:scale(1.065)}
 @media (hover:none){.ncard:hover img{transform:none}}
 .big img,.mcard img{transform-origin:50% 0}
@@ -379,7 +384,7 @@ button{font:inherit}
 .nav{transition:background .35s,box-shadow .35s,transform .55s cubic-bezier(.22,1,.36,1),opacity .4s}
 .nav.away{transform:translate(-50%,-170%);opacity:0;pointer-events:none}
 @media (prefers-reduced-motion:reduce){.nav{transition:background .35s,box-shadow .35s,opacity .2s}}
-.gallery figure img{will-change:transform;transition:transform 2s cubic-bezier(.22,1,.36,1);transform-origin:50% 0}
+.gallery figure img{transition:transform 2s cubic-bezier(.22,1,.36,1);transform-origin:50% 0}
 .gallery figure:hover img{transform:scale(1.065)}
 @media (hover:none){.gallery figure:hover img{transform:none}}
 .mcard .im::before{background:linear-gradient(180deg,rgba(0,0,0,.5),rgba(0,0,0,0) 50%),linear-gradient(0deg,rgba(0,0,0,.55),rgba(0,0,0,0) 45%)}
@@ -516,6 +521,8 @@ html body .rv-w.rv-w{display:inline}
 .about .ab-row.rv-row.rv-on::before{transform:none}
 .about .ab-acc .ab-row:first-child.rv-row::before{display:none}
 @media (prefers-reduced-motion:reduce){.rv-top::before,.rv-bot::after{display:none}.about .ab-row.rv-row{border-top-color:#b9b9b9}.about .ab-row.rv-row::before{display:none}.rv-li{transform:none;transition:none}.rv-fade,.rv-fade-o{opacity:1;transform:none;transition:none}}
+/* 이미지 GPU 레이어는 호버 중에만 생성 (갤러리 이미지 수십 장이 항상 레이어를 잡지 않도록) */
+.big:hover img,.mcard:hover img,.hz:hover img,.ncard:hover img,.gallery figure:hover img{will-change:transform}
 /* 닫기 버튼: 항상 ✕만 표시 (CLOSE 글자 ↔ ✕ 전환 없음) */
 .modal .x,.modal .x.min{width:34px;height:34px;padding:0;justify-content:center;transform:none}
 .modal .x .xx,.modal .x.min .xx{font-size:13px}
@@ -524,10 +531,10 @@ html body .rv-w.rv-w{display:inline}
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="lg" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="1" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="14" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
 <nav class="nav" id="nav" data-tone="light"></nav>
-<div class="bblur" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="bblur" aria-hidden="true"><i></i><i></i></div>
 <div class="view" id="vMain"></div>
 <div class="view" id="vDetail"></div>
-<div class="zc" id="zc" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M7.25 2h1.5v5.25H14v1.5H8.75V14h-1.5V8.75H2v-1.5h5.25z"/></svg></div>
+<div class="zc" id="zc" aria-hidden="true"><svg class="i-plus" viewBox="0 0 16 16"><path d="M7.25 2h1.5v5.25H14v1.5H8.75V14h-1.5V8.75H2v-1.5h5.25z"/></svg><svg class="i-pause" viewBox="0 0 16 16"><path d="M4 2.5h2.8v11H4zM9.2 2.5H12v11H9.2z"/></svg><svg class="i-play" viewBox="0 0 16 16"><path d="M4.5 2.5v11l9-5.5z"/></svg></div>
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Image viewer"><button class="x" id="close" aria-label="Close"><span class="xx" aria-hidden="true">✕</span></button><div class="lbwrap">
   <div class="vp" id="vp">
     <img id="mImg" alt=""><img id="mImg2" alt="">
@@ -575,7 +582,7 @@ let sections=[],pending=null,view="main";
 
 
 const HI=u=>u.replace(/\.jpg$/,"@4k.jpg");
-const IMGT=(u,hi,sizes,lazy=true,alt="")=>`<img src="${u}"${hi?` srcset="${u} 1920w, ${HI(u)} 3840w" sizes="${sizes}"`:""} alt="${esc(alt)}"${lazy?' loading="lazy"':""}>`;
+const IMGT=(u,hi,sizes,lazy=true,alt="")=>`<img src="${u}"${hi?` srcset="${u} 1920w, ${HI(u)} 3840w" sizes="${sizes}"`:""} alt="${esc(alt)}"${lazy?' loading="lazy"':""} decoding="async">`;
 const SZ_PAIR="(max-width:760px) 100vw, 50vw";
 
 const HOME_PICK={"000":["g43","g36","g40"],"001":["home_cine","g04","home_truck"],"002":["g01","g06","g03"],"003":["g01","g15","g07"],"004":["g17","g08","g11"]};
@@ -640,7 +647,7 @@ function secHTML(sc){
     return `<div class="grp"><div class="gh mono"><b>${esc(g.name)}</b><span>${String(im.length+(g.videos||[]).length).padStart(2,"0")}</span></div>${g.msn?`<div class="msn">${g.msn.map(c=>`<div class="mc">${c.map(k=>{const u=im[k];return `<figure class="hz" data-ar="${ar[k]}" style="aspect-ratio:${ar[k]}" data-side="l" data-hi="${u}" data-t="${esc(g.title||"")}" data-d="">${IMGT(u,false,"(max-width:760px) 100vw, 380px",true,g.name+" "+(k+1))}</figure>`}).join("")}</div>`).join("")}</div>`:`<div class="gg">${im.map((u,k)=>`<figure class="hz ${full[k]?"full":""}${wide[k]?" wide":""}" data-ar="${ar[k]}" style="${(wide[k]||Math.abs(ar[k]-16/9)>.02)?`aspect-ratio:${ar[k]}`:""}" data-side="${(g.sides&&g.sides[k])||(k%2?"r":"l")}" data-hi="${(g.hi&&g.hi[k])?HI(u):u}" data-t="${esc(g.title||"")}" data-d="${esc((g.lines||[]).join(" / "))}">${IMGT(u,g.hi&&g.hi[k],full[k]?"100vw":SZ_PAIR,true,g.name+" "+(k+1))}${cap}</figure>`).join("")}${(g.videos||[]).map(v=>`<figure class="hz vid${v.big?" full":""}" style="aspect-ratio:2"><video src="${v.src}" poster="${v.poster}" muted loop playsinline preload="none" data-lz></video></figure>`).join("")}</div>`}</div>`}).join("")}</div></div>`;
 }
 
-const VIO=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;if(e.isIntersecting)v.play().catch(()=>{});else v.pause()}),{threshold:.35});
+const VIO=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;if(e.isIntersecting){if(!v.dataset.hold)v.play().catch(()=>{})}else v.pause()}),{threshold:.35});
 function vidObserve(){VIO.disconnect();document.querySelectorAll("#vDetail video[data-lz]").forEach(v=>VIO.observe(v))}   /* 상세 페이지를 다시 그릴 때 이전 영상 관찰 해제 */
 function detailHTML(i){
   const p=P[i];let g=p.gallery.slice(),cells="";
@@ -767,7 +774,9 @@ $("sq").addEventListener("click",e=>{const i=e.target.closest("i");if(!i)return;
 (function(){
   const zc=$("zc");if(!zc||!matchMedia("(hover:hover) and (pointer:fine)").matches)return;
   const hit=t=>t&&t.closest&&t.closest("#vDetail .gallery figure,#vDetail .grp figure:not(.vid)")&&!$("modal").classList.contains("on");
-  document.addEventListener("mousemove",e=>{if(hit(e.target)){zc.style.transform=`translate(${e.clientX}px,${e.clientY}px)`;zc.classList.add("on")}else zc.classList.remove("on")});
+  const vfig=t=>t&&t.closest&&t.closest("#vDetail .grp figure.vid");
+  document.addEventListener("mousemove",e=>{const vf=vfig(e.target);if(hit(e.target)||vf){zc.style.transform=`translate(${e.clientX}px,${e.clientY}px)`;zc.classList.toggle("vm",!!vf);if(vf)zc.classList.toggle("ps",!!vf.querySelector("video").dataset.hold);zc.classList.add("on")}else zc.classList.remove("on")});
+  document.addEventListener("click",e=>{const vf=vfig(e.target);if(!vf||$("modal").classList.contains("on"))return;const v=vf.querySelector("video");if(!v)return;if(v.dataset.hold){delete v.dataset.hold;v.play().catch(()=>{})}else{v.dataset.hold="1";v.pause()}zc.classList.toggle("ps",!!v.dataset.hold)});
   document.addEventListener("mouseleave",()=>zc.classList.remove("on"));
   addEventListener("scroll",()=>zc.classList.remove("on"),{passive:true});
 })();
